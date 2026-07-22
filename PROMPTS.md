@@ -210,4 +210,23 @@ Established the production-ready MERN project architecture with strict TDD workf
 ### Final Outcome
 - Workspace state verified clean. Logged prompt in PROMPTS.md, committed, and pushed to GitHub.
 
+---
+
+## Prompt 4: Clean Repository & Delete Folder Structure
+
+### Exact Prompt
+> delete all folder structure also in github
+
+### AI Response Summary
+- Removed `backend/` and `frontend/` directory structures from Git tracking and local disk.
+- Committed the removal of backend and frontend code assets.
+- Pushed changes to `origin/main` on GitHub to sync clean state.
+
+### Manual Changes
+- None.
+
+### Final Outcome
+- All folder structures deleted locally and on GitHub. Repository reset to clean root state.
+
+
 
