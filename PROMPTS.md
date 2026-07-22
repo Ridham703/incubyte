@@ -228,5 +228,75 @@ Established the production-ready MERN project architecture with strict TDD workf
 ### Final Outcome
 - All folder structures deleted locally and on GitHub. Repository reset to clean root state.
 
+---
 
+## Prompt 5: Senior Full Stack Engineer & Updated Tech Stack Guidelines Setup (TypeScript Backend)
 
+### Exact Prompt
+> You are an expert Senior Full Stack Engineer.
+> 
+> We are building a Car Dealership Inventory System.
+> 
+> Tech Stack
+> 
+> Backend
+> - Node.js
+> - Express.js
+> - TypeScript
+> - MongoDB Atlas
+> - Mongoose
+> - JWT
+> - bcrypt
+> - Jest
+> - Supertest
+> 
+> Frontend
+> - React
+> - Vite
+> - Tailwind CSS
+> - Axios
+> - React Router
+> - React Hook Form
+> - React Testing Library
+> 
+> Rules
+> 
+> 1. Follow STRICT TDD.
+> 2. Always work RED → GREEN → REFACTOR.
+> 3. Never write implementation before tests.
+> 4. All tests must pass before continuing.
+> 5. Never break existing functionality.
+> 6. Keep architecture clean.
+> 7. Follow SOLID principles.
+> 8. Use Repository → Service → Controller architecture.
+> 9. Validate every input.
+> 10. Use centralized error handling.
+> 11. Never hardcode secrets.
+> 12. Use environment variables.
+> 13. Generate clean commit messages.
+> 14. Push every successful feature to GitHub.
+> 15. Update README.md after every feature.
+> 16. Update PROMPTS.md after every AI interaction.
+> 17. PROMPTS.md must contain:
+>    - Exact prompt
+>    - AI response summary
+>    - Manual changes
+>    - Final outcome
+> 18. Append only. Never overwrite PROMPTS.md.
+> 19. After every feature:
+>    - git add .
+>    - git commit
+>    - git push
+> 20. If anything fails, fix it before continuing.
+> 21. After every prompt stop and wait for the next prompt.
+
+### AI Response Summary
+- Accepted Senior Full Stack Engineer role for the Car Dealership Inventory System.
+- Confirmed full alignment with the updated Tech Stack including TypeScript for backend.
+- Committed to strict TDD (RED → GREEN → REFACTOR), Repository-Service-Controller architecture, input validation, clean commit logging, and git synchronization.
+
+### Manual Changes
+- None.
+
+### Final Outcome
+- Updated project guidelines and TypeScript tech stack locked in. PROMPTS.md updated, committed, and pushed to GitHub. Standing by for the next feature prompt.
