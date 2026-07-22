@@ -31,7 +31,13 @@ A production-ready, full-stack **Car Dealership Inventory Management System** bu
 ### Frontend
 - **Framework**: React + Vite (JSX / JS)
 - **Styling**: Tailwind CSS (Dark Glassmorphic Theme with Indigo Primary & Cyan Accent)
-- **State & Routing**: React Router DOM, React Hook Form
+- **Architecture**:
+  - `src/api/axios.js`: Axios instance with JWT Authorization Bearer request interceptor & 401 response interceptor
+  - `src/context/AuthContext.jsx` & `src/context/useAuth.js`: Global Auth Provider & custom hook managing user state and persistence
+  - `src/components/ProtectedRoute.jsx`: Guards authenticated user routes
+  - `src/components/AdminRoute.jsx`: Guards admin-only management routes
+  - `src/components/Navbar.jsx` & `src/components/Layout.jsx`: Responsive top navigation bar with brand logo, user badges, role indicator, and layout wrapper
+- **Testing**: Vitest + React Testing Library (`npm test` inside `frontend`)
 - **UI & Animations**: Framer Motion, Lucide React, React Hot Toast
 - **HTTP Client**: Axios
 - **Testing**: React Testing Library & Vitest

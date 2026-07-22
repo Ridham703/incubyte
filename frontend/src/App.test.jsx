@@ -3,9 +3,9 @@ import { describe, it, expect } from 'vitest';
 import App from './App';
 
 describe('App Component', () => {
-  it('renders the DrivePulse Car Dealership Inventory brand title', () => {
+  it('renders the AutoSphere Car Dealership Inventory brand title', () => {
     render(<App />);
-    const brandElements = screen.getAllByText(/DrivePulse/i);
+    const brandElements = screen.getAllByText(/AutoSphere/i);
     expect(brandElements.length).toBeGreaterThan(0);
     expect(brandElements[0]).toBeInTheDocument();
 
