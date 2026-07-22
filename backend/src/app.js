@@ -3,6 +3,7 @@ import cors from "cors";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import healthRouter from "./routes/health.routes.js";
+import carRouter from "./routes/car.routes.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 
 dotenv.config();
@@ -17,6 +18,7 @@ if (process.env.NODE_ENV !== "test") {
 }
 
 app.use("/api/v1", healthRouter);
+app.use("/api/v1/cars", carRouter);
 
 app.use(errorHandler);
 
