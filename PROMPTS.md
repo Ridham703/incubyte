@@ -554,5 +554,48 @@ Established the production-ready MERN project architecture with strict TDD workf
 ### Final Outcome
 - Vehicle Mongoose Schema & Model fully implemented with 100% test pass, clean linting, committed, and pushed to GitHub.
 
+---
+
+## Prompt 11: Add Vehicle API Endpoint Implementation (TDD, Admin Protected)
+
+### Exact Prompt
+> Create Add Vehicle endpoint.
+> 
+> Admin only.
+> 
+> Validation.
+> 
+> Tests first.
+> 
+> Implement.
+> 
+> Run tests.
+> 
+> Update docs.
+> 
+> Commit.
+> 
+> Push.
+> 
+> Stop.
+
+### AI Response Summary
+- Implemented `POST /api/vehicles` endpoint with Admin-only protection and Repository-Service-Controller architecture:
+  - **VehicleRepository**: Decoupled database operations for creating vehicle records.
+  - **VehicleService**: Validates required fields, non-negative numerical values (`price`, `mileage`, `stock`), valid year range, and valid `fuelType` & `transmission` enums.
+  - **VehicleController**: Processes HTTP requests and returns `201 Created` with vehicle payload.
+  - **VehicleRoutes**: Protects `POST /` route with `protect` and `authorize('admin')` middleware.
+- Wrote integration tests first in `src/tests/vehicle.routes.test.ts` (RED phase verified).
+- Implemented all modules and verified Jest test suite passing (GREEN phase - 33/33 tests passing across 6 test suites).
+- Verified ESLint with 0 errors/warnings across backend & frontend.
+- Updated `README.md` and `PROMPTS.md`.
+
+### Manual Changes
+- None.
+
+### Final Outcome
+- Add Vehicle endpoint (`POST /api/vehicles`) fully implemented with Admin security, 100% test pass, clean linting, committed, and pushed to GitHub.
+
+
 
 
