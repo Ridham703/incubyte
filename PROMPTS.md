@@ -851,6 +851,46 @@ Established the production-ready MERN project architecture with strict TDD workf
 ### Final Outcome
 - Restock Vehicle API endpoint (`POST /api/vehicles/:id/restock`) fully implemented with Admin authorization, 100% test pass, clean linting, committed, and pushed to GitHub.
 
+---
+
+## Prompt 18: Backend Architecture Review, Code Duplication Removal & Error Handling Enhancement
+
+### Exact Prompt
+> Review backend.
+> 
+> Improve architecture.
+> 
+> Remove duplication.
+> 
+> Improve validation.
+> 
+> Improve error handling.
+> 
+> Run every backend test.
+> 
+> Fix issues.
+> 
+> Commit.
+> 
+> Push.
+> 
+> Stop.
+
+### AI Response Summary
+- Reviewed and refactored backend architecture:
+  - **Code Duplication Removal (`vehicle.service.ts`)**: Extracted `buildVehicleFilter(query)` and `buildSort(query)` helper methods to unify query building between `getVehicles` and `searchVehicles`. Consolidated fuel/transmission enum and numeric bound checks into a single private helper `validateVehicleData(data, isUpdate)`.
+  - **Error Handling Hardening (`errorHandler.ts`)**: Extended centralized `errorHandler` middleware to automatically handle Mongoose `CastError` (invalid ObjectId -> 400 Bad Request), `ValidationError` (schema violations -> 400 Bad Request), and Mongo duplicate error `11000` (409 Conflict).
+- Ran all 12 backend test suites (58/58 tests passing with 0 failures).
+- Verified ESLint with 0 errors/warnings across backend & frontend.
+- Updated `PROMPTS.md`.
+
+### Manual Changes
+- None.
+
+### Final Outcome
+- Backend refactoring and architecture enhancements completed with 100% test pass, zero linter warnings, committed, and pushed to GitHub.
+
+
 
 
 

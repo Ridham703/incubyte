@@ -2,6 +2,9 @@ import { vehicleRepository, VehicleRepository } from '../repositories/vehicle.re
 import { IVehicle, FuelType, TransmissionType } from '../models/vehicle.model';
 import { AppError } from '../middleware/errorHandler';
 
+export const VALID_FUEL_TYPES: FuelType[] = ['Gasoline', 'Diesel', 'Electric', 'Hybrid', 'Plug-in Hybrid'];
+export const VALID_TRANSMISSION_TYPES: TransmissionType[] = ['Automatic', 'Manual', 'CVT'];
+
 export interface CreateVehicleDTO {
   make: string;
   model: string;
@@ -44,18 +47,31 @@ export interface PaginatedVehiclesResponse {
 }
 
 export class VehicleService {
-  constructor(private vehicleRepo: VehicleRepository = vehicleRepository) { }
+  constructor(private vehicleRepo: VehicleRepository = vehicleRepository) {}
 
-  async addVehicle(data: CreateVehicleDTO): Promise<IVehicle> {
-    if (!data.make || !data.model || !data.year || data.price === undefined || data.mileage === undefined || !data.fuelType || !data.transmission) {
-      throw new AppError('Please provide all required vehicle fields: make, model, year, price, mileage, fuelType, transmission', 400);
+  private validateVehicleData(data: Partial<CreateVehicleDTO>, isUpdate = false): void {
+    if (!isUpdate) {
+      if (
+        !data.make ||
+        !data.model ||
+        !data.year ||
+        data.price === undefined ||
+        data.mileage === undefined ||
+        !data.fuelType ||
+        !data.transmission
+      ) {
+        throw new AppError(
+          'Please provide all required vehicle fields: make, model, year, price, mileage, fuelType, transmission',
+          400
+        );
+      }
     }
 
-    if (typeof data.price === 'number' && data.price < 0) {
+    if (data.price !== undefined && typeof data.price === 'number' && data.price < 0) {
       throw new AppError('Price cannot be negative', 400);
     }
 
-    if (typeof data.mileage === 'number' && data.mileage < 0) {
+    if (data.mileage !== undefined && typeof data.mileage === 'number' && data.mileage < 0) {
       throw new AppError('Mileage cannot be negative', 400);
     }
 
@@ -63,21 +79,89 @@ export class VehicleService {
       throw new AppError('Stock cannot be negative', 400);
     }
 
-    const validFuelTypes: FuelType[] = ['Gasoline', 'Diesel', 'Electric', 'Hybrid', 'Plug-in Hybrid'];
-    if (!validFuelTypes.includes(data.fuelType)) {
-      throw new AppError(`Please provide a valid fuel type (${validFuelTypes.join(', ')})`, 400);
+    if (data.fuelType && !VALID_FUEL_TYPES.includes(data.fuelType)) {
+      throw new AppError(`Please provide a valid fuel type (${VALID_FUEL_TYPES.join(', ')})`, 400);
     }
 
-    const validTransmissions: TransmissionType[] = ['Automatic', 'Manual', 'CVT'];
-    if (!validTransmissions.includes(data.transmission)) {
-      throw new AppError(`Please provide a valid transmission type (${validTransmissions.join(', ')})`, 400);
+    if (data.transmission && !VALID_TRANSMISSION_TYPES.includes(data.transmission)) {
+      throw new AppError(
+        `Please provide a valid transmission type (${VALID_TRANSMISSION_TYPES.join(', ')})`,
+        400
+      );
     }
 
-    const currentYear = new Date().getFullYear();
-    if (typeof data.year === 'number' && (data.year < 1900 || data.year > currentYear + 1)) {
-      throw new AppError(`Year must be between 1900 and ${currentYear + 1}`, 400);
+    if (data.year !== undefined && typeof data.year === 'number') {
+      const currentYear = new Date().getFullYear();
+      if (data.year < 1900 || data.year > currentYear + 1) {
+        throw new AppError(`Year must be between 1900 and ${currentYear + 1}`, 400);
+      }
+    }
+  }
+
+  private buildVehicleFilter(query: GetVehiclesQuery, regexTextSearch = false): Record<string, unknown> {
+    const filter: Record<string, unknown> = {};
+
+    if (query.make) {
+      filter.make = regexTextSearch
+        ? { $regex: String(query.make), $options: 'i' }
+        : String(query.make);
     }
 
+    if (query.model) {
+      filter.model = regexTextSearch
+        ? { $regex: String(query.model), $options: 'i' }
+        : String(query.model);
+    }
+
+    if (query.fuelType) {
+      filter.fuelType = String(query.fuelType);
+    }
+
+    if (query.transmission) {
+      filter.transmission = String(query.transmission);
+    }
+
+    if (query.minPrice !== undefined || query.maxPrice !== undefined) {
+      const priceFilter: Record<string, number> = {};
+      if (query.minPrice !== undefined) {
+        priceFilter.$gte = Number(query.minPrice);
+      }
+      if (query.maxPrice !== undefined) {
+        priceFilter.$lte = Number(query.maxPrice);
+      }
+      filter.price = priceFilter;
+    }
+
+    if (query.minYear !== undefined || query.maxYear !== undefined) {
+      const yearFilter: Record<string, number> = {};
+      if (query.minYear !== undefined) {
+        yearFilter.$gte = Number(query.minYear);
+      }
+      if (query.maxYear !== undefined) {
+        yearFilter.$lte = Number(query.maxYear);
+      }
+      filter.year = yearFilter;
+    }
+
+    if (query.search) {
+      const searchRegex = new RegExp(String(query.search), 'i');
+      filter.$or = [
+        { make: { $regex: searchRegex.source, $options: 'i' } },
+        { model: { $regex: searchRegex.source, $options: 'i' } },
+      ];
+    }
+
+    return filter;
+  }
+
+  private buildSort(query: GetVehiclesQuery): Record<string, 1 | -1> {
+    const sortField = String(query.sortBy || 'createdAt');
+    const sortOrderVal: 1 | -1 = query.sortOrder === 'asc' ? 1 : -1;
+    return { [sortField]: sortOrderVal };
+  }
+
+  async addVehicle(data: CreateVehicleDTO): Promise<IVehicle> {
+    this.validateVehicleData(data, false);
     return this.vehicleRepo.create(data);
   }
 
@@ -87,38 +171,7 @@ export class VehicleService {
       throw new AppError('Vehicle not found', 404);
     }
 
-    if (updateData.price !== undefined && typeof updateData.price === 'number' && updateData.price < 0) {
-      throw new AppError('Price cannot be negative', 400);
-    }
-
-    if (updateData.mileage !== undefined && typeof updateData.mileage === 'number' && updateData.mileage < 0) {
-      throw new AppError('Mileage cannot be negative', 400);
-    }
-
-    if (updateData.stock !== undefined && typeof updateData.stock === 'number' && updateData.stock < 0) {
-      throw new AppError('Stock cannot be negative', 400);
-    }
-
-    if (updateData.fuelType) {
-      const validFuelTypes: FuelType[] = ['Gasoline', 'Diesel', 'Electric', 'Hybrid', 'Plug-in Hybrid'];
-      if (!validFuelTypes.includes(updateData.fuelType)) {
-        throw new AppError(`Please provide a valid fuel type (${validFuelTypes.join(', ')})`, 400);
-      }
-    }
-
-    if (updateData.transmission) {
-      const validTransmissions: TransmissionType[] = ['Automatic', 'Manual', 'CVT'];
-      if (!validTransmissions.includes(updateData.transmission)) {
-        throw new AppError(`Please provide a valid transmission type (${validTransmissions.join(', ')})`, 400);
-      }
-    }
-
-    if (updateData.year !== undefined && typeof updateData.year === 'number') {
-      const currentYear = new Date().getFullYear();
-      if (updateData.year < 1900 || updateData.year > currentYear + 1) {
-        throw new AppError(`Year must be between 1900 and ${currentYear + 1}`, 400);
-      }
-    }
+    this.validateVehicleData(updateData, true);
 
     const updated = await this.vehicleRepo.update(id, updateData);
     if (!updated) {
@@ -201,57 +254,8 @@ export class VehicleService {
     const limit = Math.max(1, parseInt(String(query.limit || '10'), 10));
     const skip = (page - 1) * limit;
 
-    const filter: Record<string, unknown> = {};
-
-    if (query.make) {
-      filter.make = String(query.make);
-    }
-
-    if (query.model) {
-      filter.model = String(query.model);
-    }
-
-    if (query.fuelType) {
-      filter.fuelType = String(query.fuelType);
-    }
-
-    if (query.transmission) {
-      filter.transmission = String(query.transmission);
-    }
-
-    if (query.minPrice !== undefined || query.maxPrice !== undefined) {
-      const priceFilter: Record<string, number> = {};
-      if (query.minPrice !== undefined) {
-        priceFilter.$gte = Number(query.minPrice);
-      }
-      if (query.maxPrice !== undefined) {
-        priceFilter.$lte = Number(query.maxPrice);
-      }
-      filter.price = priceFilter;
-    }
-
-    if (query.minYear !== undefined || query.maxYear !== undefined) {
-      const yearFilter: Record<string, number> = {};
-      if (query.minYear !== undefined) {
-        yearFilter.$gte = Number(query.minYear);
-      }
-      if (query.maxYear !== undefined) {
-        yearFilter.$lte = Number(query.maxYear);
-      }
-      filter.year = yearFilter;
-    }
-
-    if (query.search) {
-      const searchRegex = new RegExp(String(query.search), 'i');
-      filter.$or = [
-        { make: { $regex: searchRegex.source, $options: 'i' } },
-        { model: { $regex: searchRegex.source, $options: 'i' } },
-      ];
-    }
-
-    const sortField = String(query.sortBy || 'createdAt');
-    const sortOrderVal: 1 | -1 = query.sortOrder === 'asc' ? 1 : -1;
-    const sort: Record<string, 1 | -1> = { [sortField]: sortOrderVal };
+    const filter = this.buildVehicleFilter(query, false);
+    const sort = this.buildSort(query);
 
     const [vehicles, totalVehicles] = await Promise.all([
       this.vehicleRepo.findAll(filter, sort, skip, limit),
@@ -276,49 +280,8 @@ export class VehicleService {
     const limit = Math.max(1, parseInt(String(query.limit || '10'), 10));
     const skip = (page - 1) * limit;
 
-    const filter: Record<string, unknown> = {};
-
-    if (query.make) {
-      filter.make = { $regex: String(query.make), $options: 'i' };
-    }
-
-    if (query.model) {
-      filter.model = { $regex: String(query.model), $options: 'i' };
-    }
-
-    if (query.fuelType) {
-      filter.fuelType = String(query.fuelType);
-    }
-
-    if (query.transmission) {
-      filter.transmission = String(query.transmission);
-    }
-
-    if (query.minPrice !== undefined || query.maxPrice !== undefined) {
-      const priceFilter: Record<string, number> = {};
-      if (query.minPrice !== undefined) {
-        priceFilter.$gte = Number(query.minPrice);
-      }
-      if (query.maxPrice !== undefined) {
-        priceFilter.$lte = Number(query.maxPrice);
-      }
-      filter.price = priceFilter;
-    }
-
-    if (query.minYear !== undefined || query.maxYear !== undefined) {
-      const yearFilter: Record<string, number> = {};
-      if (query.minYear !== undefined) {
-        yearFilter.$gte = Number(query.minYear);
-      }
-      if (query.maxYear !== undefined) {
-        yearFilter.$lte = Number(query.maxYear);
-      }
-      filter.year = yearFilter;
-    }
-
-    const sortField = String(query.sortBy || 'createdAt');
-    const sortOrderVal: 1 | -1 = query.sortOrder === 'asc' ? 1 : -1;
-    const sort: Record<string, 1 | -1> = { [sortField]: sortOrderVal };
+    const filter = this.buildVehicleFilter(query, true);
+    const sort = this.buildSort(query);
 
     const [vehicles, totalVehicles] = await Promise.all([
       this.vehicleRepo.findAll(filter, sort, skip, limit),
