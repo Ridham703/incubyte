@@ -22,6 +22,7 @@ A production-ready, full-stack **Car Dealership Inventory Management System** bu
 - `GET /api/auth/me` - Fetch authenticated user profile (Protected route)
 - `POST /api/vehicles` - Add new vehicle to inventory (Admin Protected route)
 - `GET /api/vehicles` - Fetch paginated vehicles with sorting (`sortBy`, `sortOrder`) & filtering (`make`, `fuelType`, `transmission`, `minPrice`, `maxPrice`, `search`)
+- `GET /api/vehicles/search` - Multi-attribute vehicle search (`make`, `model`, `minPrice`, `maxPrice`, `minYear`, `maxYear`, `fuelType`, `transmission`, `page`, `limit`)
 
 ### Frontend
 - **Framework**: React + Vite (JSX / JS)

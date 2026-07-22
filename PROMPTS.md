@@ -637,6 +637,58 @@ Established the production-ready MERN project architecture with strict TDD workf
 ### Final Outcome
 - Get Vehicles endpoint (`GET /api/vehicles`) fully implemented with Pagination, Sorting, Filtering, 100% test pass, clean linting, committed, and pushed to GitHub.
 
+---
+
+## Prompt 13: Multi-Attribute Vehicle Search Implementation (Make, Model, Price, Year, Fuel, Transmission, Pagination, TDD)
+
+### Exact Prompt
+> Implement searching.
+> 
+> Make
+> 
+> Model
+> 
+> Price
+> 
+> Year
+> 
+> Fuel
+> 
+> Transmission
+> 
+> Pagination
+> 
+> Tests first.
+> 
+> Implement.
+> 
+> Run tests.
+> 
+> Commit.
+> 
+> Push.
+> 
+> Stop.
+
+### AI Response Summary
+- Implemented dedicated Vehicle Search endpoint (`GET /api/vehicles/search`) supporting multi-attribute searching:
+  - **Make & Model**: Regex-based case-insensitive partial search.
+  - **Price Range**: Boundary filter (`minPrice`, `maxPrice`).
+  - **Year Range**: Boundary filter (`minYear`, `maxYear`).
+  - **Fuel & Transmission**: Enum filters for fuel type and transmission.
+  - **Pagination**: Paginated output with `page`, `limit`, `totalVehicles`, and `totalPages` calculation.
+- Wrote integration tests first in `src/tests/vehicle.search.test.ts` (RED phase verified).
+- Implemented `searchVehicles` in `VehicleService`, `VehicleController`, and registered route `GET /search` in `vehicle.routes.ts` (GREEN phase - 38/38 tests passing across 8 test suites).
+- Verified ESLint with 0 errors/warnings across backend & frontend.
+- Updated `README.md` and `PROMPTS.md`.
+
+### Manual Changes
+- None.
+
+### Final Outcome
+- Vehicle Search endpoint (`GET /api/vehicles/search`) fully implemented with 100% test pass, clean linting, committed, and pushed to GitHub.
+
+
 
 
 

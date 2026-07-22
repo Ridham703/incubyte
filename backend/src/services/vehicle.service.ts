@@ -21,6 +21,7 @@ export interface GetVehiclesQuery {
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
   make?: string;
+  model?: string;
   fuelType?: string;
   transmission?: string;
   minPrice?: string | number;
@@ -89,6 +90,10 @@ export class VehicleService {
       filter.make = String(query.make);
     }
 
+    if (query.model) {
+      filter.model = String(query.model);
+    }
+
     if (query.fuelType) {
       filter.fuelType = String(query.fuelType);
     }
@@ -125,6 +130,73 @@ export class VehicleService {
         { make: { $regex: searchRegex.source, $options: 'i' } },
         { model: { $regex: searchRegex.source, $options: 'i' } },
       ];
+    }
+
+    const sortField = String(query.sortBy || 'createdAt');
+    const sortOrderVal: 1 | -1 = query.sortOrder === 'asc' ? 1 : -1;
+    const sort: Record<string, 1 | -1> = { [sortField]: sortOrderVal };
+
+    const [vehicles, totalVehicles] = await Promise.all([
+      this.vehicleRepo.findAll(filter, sort, skip, limit),
+      this.vehicleRepo.count(filter),
+    ]);
+
+    const totalPages = Math.ceil(totalVehicles / limit) || 1;
+
+    return {
+      vehicles,
+      pagination: {
+        page,
+        limit,
+        totalVehicles,
+        totalPages,
+      },
+    };
+  }
+
+  async searchVehicles(query: GetVehiclesQuery): Promise<PaginatedVehiclesResponse> {
+    const page = Math.max(1, parseInt(String(query.page || '1'), 10));
+    const limit = Math.max(1, parseInt(String(query.limit || '10'), 10));
+    const skip = (page - 1) * limit;
+
+    const filter: Record<string, unknown> = {};
+
+    if (query.make) {
+      filter.make = { $regex: String(query.make), $options: 'i' };
+    }
+
+    if (query.model) {
+      filter.model = { $regex: String(query.model), $options: 'i' };
+    }
+
+    if (query.fuelType) {
+      filter.fuelType = String(query.fuelType);
+    }
+
+    if (query.transmission) {
+      filter.transmission = String(query.transmission);
+    }
+
+    if (query.minPrice !== undefined || query.maxPrice !== undefined) {
+      const priceFilter: Record<string, number> = {};
+      if (query.minPrice !== undefined) {
+        priceFilter.$gte = Number(query.minPrice);
+      }
+      if (query.maxPrice !== undefined) {
+        priceFilter.$lte = Number(query.maxPrice);
+      }
+      filter.price = priceFilter;
+    }
+
+    if (query.minYear !== undefined || query.maxYear !== undefined) {
+      const yearFilter: Record<string, number> = {};
+      if (query.minYear !== undefined) {
+        yearFilter.$gte = Number(query.minYear);
+      }
+      if (query.maxYear !== undefined) {
+        yearFilter.$lte = Number(query.maxYear);
+      }
+      filter.year = yearFilter;
     }
 
     const sortField = String(query.sortBy || 'createdAt');
