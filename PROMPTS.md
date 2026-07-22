@@ -1041,6 +1041,43 @@ Established the production-ready MERN project architecture with strict TDD workf
 ### Final Outcome
 - Frontend vehicle search, multi-attribute filtering, and pagination navigation fully implemented, tested, clean linter, committed, and pushed to GitHub.
 
+---
+
+## Prompt 23: Vehicle Purchase Feature (Purchase Button, Confirmation Modal, Stock 0 Disabled State, API Integration, Testing)
+
+### Exact Prompt
+> Purchase button.
+> 
+> Confirmation.
+> 
+> Disable if stock zero.
+> 
+> API integration.
+> 
+> Tests.
+> 
+> Commit.
+> 
+> Push.
+> 
+> Stop.
+
+### AI Response Summary
+- Implemented Vehicle Purchase Feature with modal confirmation and real-time stock updating:
+  - **Purchase Button (`src/components/VehicleCard.jsx`)**: Added "Purchase Vehicle" action button to every vehicle card. Automatically disables button with "Out of Stock" styling when `stock === 0`. Prompts unauthenticated users to sign in.
+  - **Confirmation Modal (`src/components/PurchaseModal.jsx`)**: Built dark glassmorphic confirmation modal dialog displaying vehicle details (`Year`, `Make`, `Model`, `Price`, `Stock`). Features "Confirm Purchase" and "Cancel" buttons.
+  - **API Integration (`POST /api/vehicles/:id/purchase`)**: Sends `{ quantity: 1 }` purchase payload via Axios. Displays success/error toast notifications (`react-hot-toast`) and updates local vehicle inventory state in `Dashboard.jsx`.
+  - **Vitest & RTL Frontend Tests (`src/components/PurchaseModal.test.jsx` & `src/components/VehicleCard.test.jsx`)**: Written unit tests verifying confirmation modal rendering, API purchase invocation, and disabled purchase button state when stock is 0 (18/18 frontend tests passing across 10 test suites).
+- Verified ESLint with 0 errors/warnings across frontend & backend.
+- Updated `README.md` and `PROMPTS.md`.
+
+### Manual Changes
+- None.
+
+### Final Outcome
+- Vehicle purchase feature fully implemented with confirmation modal, out-of-stock disabled state, API integration, 100% test pass, clean linter, committed, and pushed to GitHub.
+
+
 
 
 

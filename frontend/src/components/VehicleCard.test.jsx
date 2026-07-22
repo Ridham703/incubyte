@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import VehicleCard from './VehicleCard';
+import { AuthProvider } from '../context/AuthContext';
 import { describe, it, expect } from 'vitest';
 
 describe('VehicleCard Component', () => {
@@ -18,7 +20,13 @@ describe('VehicleCard Component', () => {
   };
 
   it('renders vehicle card details correctly', () => {
-    render(<VehicleCard vehicle={mockVehicle} />);
+    render(
+      <AuthProvider>
+        <BrowserRouter>
+          <VehicleCard vehicle={mockVehicle} />
+        </BrowserRouter>
+      </AuthProvider>
+    );
 
     expect(screen.getByText('Porsche')).toBeInTheDocument();
     expect(screen.getByText('911 GT3')).toBeInTheDocument();
@@ -27,5 +35,20 @@ describe('VehicleCard Component', () => {
     expect(screen.getByText('1,500 mi')).toBeInTheDocument();
     expect(screen.getByText('Gasoline')).toBeInTheDocument();
     expect(screen.getByText(/Low Stock \(2\)/i)).toBeInTheDocument();
+  });
+
+  it('disables purchase button when vehicle stock is zero', () => {
+    const zeroStockVehicle = { ...mockVehicle, stock: 0 };
+
+    render(
+      <AuthProvider>
+        <BrowserRouter>
+          <VehicleCard vehicle={zeroStockVehicle} />
+        </BrowserRouter>
+      </AuthProvider>
+    );
+
+    const purchaseButton = screen.getByRole('button', { name: /out of stock/i });
+    expect(purchaseButton).toBeDisabled();
   });
 });

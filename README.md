@@ -33,9 +33,10 @@ A production-ready, full-stack **Car Dealership Inventory Management System** bu
 - **Styling**: Tailwind CSS (Dark Glassmorphic Theme with Indigo Primary & Cyan Accent)
 - **Pages & Components**:
   - `src/pages/Dashboard.jsx`: Inventory showroom dashboard displaying vehicles, loading skeletons, and error retry states
+  - `src/components/VehicleCard.jsx`: Vehicle card displaying image, specs, formatted price tag, stock status badges, & purchase button (disabled when stock is 0)
+  - `src/components/PurchaseModal.jsx`: Purchase confirmation modal dialog connecting to `POST /api/vehicles/:id/purchase`
   - `src/components/SearchFilters.jsx`: Keyword search bar, multi-attribute filter panel (Fuel, Transmission, Price, Year, Sorting), & reset button
   - `src/components/Pagination.jsx`: Dynamic page navigation bar with page numbers, prev/next controls, and items summary counter
-  - `src/components/VehicleCard.jsx`: Vehicle card displaying image, specs, formatted price tag, and stock status badges
   - `src/pages/Login.jsx`: Login page with React Hook Form validation, JWT token storage, & toast notifications
   - `src/pages/Register.jsx`: Register page supporting user/admin registration with React Hook Form validation
 - **Architecture**:
