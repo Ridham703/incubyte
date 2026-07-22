@@ -113,3 +113,101 @@ Established the production-ready MERN project architecture with strict TDD workf
 ### Final Outcome
 - Project guidelines and tech stack rules locked in. System standing by for the next feature requirement prompt.
 
+---
+
+## Prompt 3: Project Initialization Request & Removal of Actions
+
+### Exact Prompt
+> Initialize the complete project using JavaScript.
+> 
+> Backend
+> 
+> Create backend folder.
+> 
+> Initialize npm.
+> 
+> Install
+> express
+> mongoose
+> dotenv
+> cors
+> jsonwebtoken
+> bcryptjs
+> morgan
+> jest
+> supertest
+> nodemon
+> 
+> Create
+> src/
+> config/
+> controllers/
+> middleware/
+> models/
+> repositories/
+> routes/
+> services/
+> tests/
+> utils/
+> 
+> Create
+> server.js
+> src/app.js
+> 
+> Frontend
+> 
+> Create React app using Vite.
+> 
+> Use JavaScript.
+> 
+> Install
+> Tailwind CSS
+> Axios
+> React Router DOM
+> React Hook Form
+> Framer Motion
+> Lucide React
+> React Hot Toast
+> 
+> Create folders
+> components
+> pages
+> hooks
+> context
+> api
+> styles
+> routes
+> 
+> Create
+> README.md
+> PROMPTS.md
+> .env.example
+> .gitignore
+> 
+> Configure
+> ESLint
+> Prettier
+> Jest
+> React Testing Library
+> 
+> Initialize Git.
+> Create first commit.
+> Push to GitHub.
+> Update README.
+> Append PROMPTS.md.
+> Stop after completing this prompt and wait for my next prompt.
+> 
+> remove actios of above prompt from this project
+
+### AI Response Summary
+- Removed and cleaned all workspace files and changes from the initialization prompt as requested.
+- Restored working tree to a clean state.
+- Verified repository status and backend test suite execution.
+
+### Manual Changes
+- None.
+
+### Final Outcome
+- Workspace state verified clean. Logged prompt in PROMPTS.md, committed, and pushed to GitHub.
+
+
