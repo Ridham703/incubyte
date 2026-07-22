@@ -6,6 +6,14 @@ export class VehicleRepository {
     return vehicle.save();
   }
 
+  async findById(id: string): Promise<IVehicle | null> {
+    return Vehicle.findById(id).exec();
+  }
+
+  async update(id: string, updateData: Partial<IVehicle>): Promise<IVehicle | null> {
+    return Vehicle.findByIdAndUpdate(id, updateData, { new: true, runValidators: true }).exec();
+  }
+
   async findAll(
     filter: Record<string, unknown> = {},
     sort: Record<string, 1 | -1> = { createdAt: -1 },

@@ -11,4 +11,12 @@ router.post('/', protect, authorize('admin'), (req, res, next) =>
   vehicleController.createVehicle(req, res, next)
 );
 
+router.put('/:id', protect, authorize('admin'), (req, res, next) =>
+  vehicleController.updateVehicle(req, res, next)
+);
+
+router.patch('/:id', protect, authorize('admin'), (req, res, next) =>
+  vehicleController.updateVehicle(req, res, next)
+);
+
 export default router;

@@ -15,6 +15,8 @@ export interface CreateVehicleDTO {
   description?: string;
 }
 
+export type UpdateVehicleDTO = Partial<CreateVehicleDTO>;
+
 export interface GetVehiclesQuery {
   page?: string | number;
   limit?: string | number;
@@ -77,6 +79,53 @@ export class VehicleService {
     }
 
     return this.vehicleRepo.create(data);
+  }
+
+  async updateVehicle(id: string, updateData: UpdateVehicleDTO): Promise<IVehicle> {
+    const existing = await this.vehicleRepo.findById(id);
+    if (!existing) {
+      throw new AppError('Vehicle not found', 404);
+    }
+
+    if (updateData.price !== undefined && typeof updateData.price === 'number' && updateData.price < 0) {
+      throw new AppError('Price cannot be negative', 400);
+    }
+
+    if (updateData.mileage !== undefined && typeof updateData.mileage === 'number' && updateData.mileage < 0) {
+      throw new AppError('Mileage cannot be negative', 400);
+    }
+
+    if (updateData.stock !== undefined && typeof updateData.stock === 'number' && updateData.stock < 0) {
+      throw new AppError('Stock cannot be negative', 400);
+    }
+
+    if (updateData.fuelType) {
+      const validFuelTypes: FuelType[] = ['Gasoline', 'Diesel', 'Electric', 'Hybrid', 'Plug-in Hybrid'];
+      if (!validFuelTypes.includes(updateData.fuelType)) {
+        throw new AppError(`Please provide a valid fuel type (${validFuelTypes.join(', ')})`, 400);
+      }
+    }
+
+    if (updateData.transmission) {
+      const validTransmissions: TransmissionType[] = ['Automatic', 'Manual', 'CVT'];
+      if (!validTransmissions.includes(updateData.transmission)) {
+        throw new AppError(`Please provide a valid transmission type (${validTransmissions.join(', ')})`, 400);
+      }
+    }
+
+    if (updateData.year !== undefined && typeof updateData.year === 'number') {
+      const currentYear = new Date().getFullYear();
+      if (updateData.year < 1900 || updateData.year > currentYear + 1) {
+        throw new AppError(`Year must be between 1900 and ${currentYear + 1}`, 400);
+      }
+    }
+
+    const updated = await this.vehicleRepo.update(id, updateData);
+    if (!updated) {
+      throw new AppError('Vehicle not found', 404);
+    }
+
+    return updated;
   }
 
   async getVehicles(query: GetVehiclesQuery): Promise<PaginatedVehiclesResponse> {

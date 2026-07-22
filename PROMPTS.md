@@ -688,6 +688,47 @@ Established the production-ready MERN project architecture with strict TDD workf
 ### Final Outcome
 - Vehicle Search endpoint (`GET /api/vehicles/search`) fully implemented with 100% test pass, clean linting, committed, and pushed to GitHub.
 
+---
+
+## Prompt 14: Update Vehicle API Endpoint Implementation (TDD, Admin Protected)
+
+### Exact Prompt
+> Implement Update Vehicle API.
+> 
+> Admin only.
+> 
+> Validation.
+> 
+> Tests first.
+> 
+> Implement.
+> 
+> Run tests.
+> 
+> Commit.
+> 
+> Push.
+> 
+> Stop.
+
+### AI Response Summary
+- Implemented `PUT /api/vehicles/:id` and `PATCH /api/vehicles/:id` Update Vehicle endpoints with Admin protection and Repository-Service-Controller architecture:
+  - **VehicleRepository**: Added `findById` and `update` (using `findByIdAndUpdate` with validator execution).
+  - **VehicleService**: Validates vehicle existence (404 Not Found), non-negative bounds for updated numerical fields (`price`, `mileage`, `stock`), valid year range, and valid enums for `fuelType` & `transmission`.
+  - **VehicleController**: Processes HTTP requests and returns `200 OK` with updated vehicle payload.
+  - **VehicleRoutes**: Protects `PUT /:id` and `PATCH /:id` routes with `protect` and `authorize('admin')` middleware.
+- Wrote integration tests first in `src/tests/vehicle.update.test.ts` (RED phase verified).
+- Implemented all modules and verified Jest test suite passing (GREEN phase - 44/44 tests passing across 9 test suites).
+- Verified ESLint with 0 errors/warnings across backend & frontend.
+- Updated `README.md` and `PROMPTS.md`.
+
+### Manual Changes
+- None.
+
+### Final Outcome
+- Update Vehicle API endpoint (`PUT /api/vehicles/:id`) fully implemented with Admin security, 100% test pass, clean linting, committed, and pushed to GitHub.
+
+
 
 
 

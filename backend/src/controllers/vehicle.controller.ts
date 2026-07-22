@@ -15,6 +15,19 @@ export class VehicleController {
     }
   }
 
+  async updateVehicle(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const vehicle = await vehicleService.updateVehicle(req.params.id, req.body);
+      res.status(200).json({
+        status: 'success',
+        message: 'Vehicle updated successfully',
+        data: { vehicle },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async getVehicles(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const result = await vehicleService.getVehicles(req.query);
