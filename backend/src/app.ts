@@ -3,6 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import healthRoutes from './routes/health.routes';
+import authRoutes from './routes/auth.routes';
 import { errorHandler } from './middleware/errorHandler';
 
 dotenv.config();
@@ -17,6 +18,7 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 app.use('/api', healthRoutes);
+app.use('/api/auth', authRoutes);
 
 app.use(errorHandler);
 

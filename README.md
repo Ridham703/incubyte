@@ -10,8 +10,15 @@ A production-ready, full-stack **Car Dealership Inventory Management System** bu
 - **Runtime**: Node.js & TypeScript
 - **Framework**: Express.js
 - **Database**: MongoDB Atlas / Mongoose ORM (`src/config/db.ts`)
-- **Testing**: Jest (`ts-jest`) & Supertest (Isolated TDD Environment with Mongoose mocks)
-- **Security & Utilities**: JWT, bcryptjs, dotenv, cors, morgan, Centralized Error Handling
+- **Authentication**: JWT & bcryptjs Password Hashing (`src/services/auth.service.ts`)
+- **Testing**: Jest (`ts-jest`) & Supertest (Isolated TDD Environment with Mongoose & Repository mocks)
+- **Security & Utilities**: JWT Bearer Middleware, Input Validation, Centralized Error Handling
+
+### API Endpoints
+- `GET /api/health` - System health check status
+- `POST /api/auth/register` - User registration (name, email, password, role)
+- `POST /api/auth/login` - User authentication & JWT token generation
+- `GET /api/auth/me` - Fetch authenticated user profile (Protected route)
 
 ### Frontend
 - **Framework**: React + Vite (JSX / JS)
