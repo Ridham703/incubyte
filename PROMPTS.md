@@ -932,6 +932,45 @@ Established the production-ready MERN project architecture with strict TDD workf
 ### Final Outcome
 - Frontend architecture configured with Axios interceptors, AuthContext, Protected & Admin routes, Tailwind glassmorphic layout, 100% test pass, clean linter, committed, and pushed to GitHub.
 
+---
+
+## Prompt 20: Login and Register Authentication Pages (Validation, JWT Storage, Protected Routing, Testing)
+
+### Exact Prompt
+> Create Login page.
+> 
+> Register page.
+> 
+> Validation.
+> 
+> JWT storage.
+> 
+> Protected routing.
+> 
+> Frontend tests.
+> 
+> Commit.
+> 
+> Push.
+> 
+> Stop.
+
+### AI Response Summary
+- Created modern dark glassmorphic Login and Register authentication pages:
+  - **Login Page (`src/pages/Login.jsx`)**: Built with `react-hook-form` validation for required fields, valid email pattern, and minimum 6-character password length. Connects to `useAuth().login()`, stores signed JWT token in `localStorage`, displays toast notifications (`react-hot-toast`), and redirects to requested target route.
+  - **Register Page (`src/pages/Register.jsx`)**: Built with `react-hook-form` validation for name, email, password, confirm password matching, and role selection (`user` / `admin`). Connects to `useAuth().register()`, stores JWT token in `localStorage`, and redirects upon success.
+  - **Protected Routing Integration (`src/App.jsx`)**: Connected `/login` and `/register` routes to respective page components.
+  - **Vitest & RTL Frontend Tests (`src/pages/Login.test.jsx` & `src/pages/Register.test.jsx`)**: Written unit tests verifying form rendering and validation error handling (8/8 frontend tests passing across 5 test suites).
+- Verified ESLint with 0 errors/warnings across frontend & backend.
+- Updated `README.md` and `PROMPTS.md`.
+
+### Manual Changes
+- None.
+
+### Final Outcome
+- Login and Register authentication pages fully implemented with validation, JWT storage, protected routing, 100% test pass, clean linter, committed, and pushed to GitHub.
+
+
 
 
 
