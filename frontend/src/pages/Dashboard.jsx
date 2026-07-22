@@ -96,7 +96,8 @@ export const Dashboard = () => {
           <button
             onClick={fetchVehicles}
             disabled={loading}
-            className="self-start md:self-auto flex items-center space-x-2 bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 border border-slate-700/80 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-lg hover:shadow-indigo-500/10 disabled:opacity-50"
+            aria-label="Refresh vehicle inventory"
+            className="self-start md:self-auto flex items-center space-x-2 bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 border border-slate-700/80 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-lg hover:shadow-indigo-500/10 disabled:opacity-50 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin text-indigo-400' : ''}`} />
             <span>Refresh Stock</span>
@@ -113,7 +114,11 @@ export const Dashboard = () => {
 
       {/* Loading State Skeletons */}
       {loading && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div
+          aria-live="polite"
+          aria-busy="true"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+        >
           {Array.from({ length: 8 }).map((_, idx) => (
             <div
               key={idx}
@@ -135,7 +140,11 @@ export const Dashboard = () => {
 
       {/* Error State Banner */}
       {!loading && error && (
-        <div className="p-8 bg-red-950/30 border border-red-800/50 rounded-2xl text-center space-y-4 max-w-lg mx-auto backdrop-blur-md">
+        <div
+          role="alert"
+          aria-live="assertive"
+          className="p-8 bg-red-950/30 border border-red-800/50 rounded-2xl text-center space-y-4 max-w-lg mx-auto backdrop-blur-md"
+        >
           <div className="inline-flex p-3 bg-red-900/40 rounded-full text-red-400">
             <AlertCircle className="h-8 w-8" />
           </div>

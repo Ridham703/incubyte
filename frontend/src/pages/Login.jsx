@@ -62,6 +62,9 @@ export const Login = () => {
                 </div>
                 <input
                   type="email"
+                  id="login-email"
+                  aria-invalid={Boolean(errors.email)}
+                  aria-describedby={errors.email ? 'email-error' : undefined}
                   {...register('email', {
                     required: 'Email is required',
                     pattern: {
@@ -71,11 +74,11 @@ export const Login = () => {
                   })}
                   className={`w-full pl-11 pr-4 py-3 bg-slate-800/80 border ${
                     errors.email ? 'border-red-500/80' : 'border-slate-700/80'
-                  } rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm`}
+                  } rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm`}
                   placeholder="name@example.com"
                 />
               </div>
-              {errors.email && <p className="mt-1.5 text-xs text-red-400 font-medium">{errors.email.message}</p>}
+              {errors.email && <p id="email-error" className="mt-1.5 text-xs text-red-400 font-medium">{errors.email.message}</p>}
             </div>
 
             {/* Password Input */}
@@ -89,6 +92,9 @@ export const Login = () => {
                 </div>
                 <input
                   type="password"
+                  id="login-password"
+                  aria-invalid={Boolean(errors.password)}
+                  aria-describedby={errors.password ? 'password-error' : undefined}
                   {...register('password', {
                     required: 'Password is required',
                     minLength: {
@@ -98,12 +104,12 @@ export const Login = () => {
                   })}
                   className={`w-full pl-11 pr-4 py-3 bg-slate-800/80 border ${
                     errors.password ? 'border-red-500/80' : 'border-slate-700/80'
-                  } rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm`}
+                  } rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm`}
                   placeholder="••••••••"
                 />
               </div>
               {errors.password && (
-                <p className="mt-1.5 text-xs text-red-400 font-medium">{errors.password.message}</p>
+                <p id="password-error" className="mt-1.5 text-xs text-red-400 font-medium">{errors.password.message}</p>
               )}
             </div>
           </div>

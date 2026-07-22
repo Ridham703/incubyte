@@ -142,13 +142,14 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="vehicle-modal-title">
       <div className="relative w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 my-8">
         {/* Close Button */}
         <button
           onClick={onClose}
           disabled={loading}
-          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-200 rounded-xl hover:bg-slate-800/80 transition-all"
+          aria-label="Close vehicle form dialog"
+          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-200 rounded-xl hover:bg-slate-800/80 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <X className="h-5 w-5" />
         </button>
@@ -159,7 +160,7 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
             {isEditing ? <Edit3 className="h-6 w-6" /> : <PlusCircle className="h-6 w-6" />}
           </div>
           <div>
-            <h3 className="text-2xl font-extrabold text-white">
+            <h3 id="vehicle-modal-title" className="text-2xl font-extrabold text-white">
               {isEditing ? 'Vehicle Edit Form' : 'Vehicle Add Form'}
             </h3>
             <p className="text-xs text-slate-400">Fill in the specification details for dealership inventory</p>
@@ -176,6 +177,9 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
               </label>
               <input
                 type="text"
+                id="make"
+                aria-invalid={Boolean(errors.make)}
+                aria-describedby={errors.make ? 'make-error' : undefined}
                 {...register('make', {
                   required: 'Make is required',
                   minLength: { value: 2, message: 'Make must be at least 2 characters' },
@@ -183,9 +187,9 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
                 placeholder="e.g. BMW, Tesla, Audi"
                 className={`w-full py-2.5 px-3.5 bg-slate-800/80 border ${
                   errors.make ? 'border-red-500/80' : 'border-slate-700/80'
-                } rounded-xl text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50`}
+                } rounded-xl text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500`}
               />
-              {errors.make && <p className="mt-1 text-xs text-red-400 font-medium">{errors.make.message}</p>}
+              {errors.make && <p id="make-error" className="mt-1 text-xs text-red-400 font-medium">{errors.make.message}</p>}
             </div>
 
             {/* Model */}
@@ -195,6 +199,9 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
               </label>
               <input
                 type="text"
+                id="model"
+                aria-invalid={Boolean(errors.model)}
+                aria-describedby={errors.model ? 'model-error' : undefined}
                 {...register('model', {
                   required: 'Model is required',
                   minLength: { value: 2, message: 'Model must be at least 2 characters' },
@@ -202,9 +209,9 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
                 placeholder="e.g. M3, Model 3, RS5"
                 className={`w-full py-2.5 px-3.5 bg-slate-800/80 border ${
                   errors.model ? 'border-red-500/80' : 'border-slate-700/80'
-                } rounded-xl text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50`}
+                } rounded-xl text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500`}
               />
-              {errors.model && <p className="mt-1 text-xs text-red-400 font-medium">{errors.model.message}</p>}
+              {errors.model && <p id="model-error" className="mt-1 text-xs text-red-400 font-medium">{errors.model.message}</p>}
             </div>
 
             {/* Year */}
@@ -418,14 +425,14 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
               type="button"
               onClick={onClose}
               disabled={loading}
-              className="w-1/2 py-3 px-4 rounded-xl border border-slate-700 text-sm font-semibold text-slate-300 hover:bg-slate-800 hover:text-white transition-all disabled:opacity-50"
+              className="w-1/2 py-3 px-4 rounded-xl border border-slate-700 text-sm font-semibold text-slate-300 hover:bg-slate-800 hover:text-white transition-all disabled:opacity-50 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="w-1/2 flex items-center justify-center space-x-2 py-3 px-4 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 shadow-lg shadow-indigo-600/30 transition-all disabled:opacity-50"
+              className="w-1/2 flex items-center justify-center space-x-2 py-3 px-4 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 shadow-lg shadow-indigo-600/30 transition-all disabled:opacity-50 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-cyan-500"
             >
               {loading ? (
                 <span className="flex items-center space-x-2">

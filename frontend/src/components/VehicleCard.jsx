@@ -65,7 +65,7 @@ export const VehicleCard = ({ vehicle, onVehicleUpdate }) => {
         <div className="relative aspect-[16/10] overflow-hidden bg-slate-950">
           <img
             src={imgSrc}
-            alt={`${vehicle.make} ${vehicle.model}`}
+            alt={`${vehicle.year} ${vehicle.make} ${vehicle.model} — ${vehicle.fuelType}, ${(vehicle.mileage || 0).toLocaleString()} miles`}
             onError={() =>
               setImgSrc('https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=1000')
             }
@@ -119,7 +119,14 @@ export const VehicleCard = ({ vehicle, onVehicleUpdate }) => {
             <button
               onClick={handlePurchaseClick}
               disabled={isOutOfStock}
-              className={`w-full flex items-center justify-center space-x-2 py-2.5 px-4 rounded-xl text-xs font-bold transition-all shadow-md ${
+              aria-label={
+                isOutOfStock
+                  ? `${vehicle.make} ${vehicle.model} is out of stock`
+                  : isAuthenticated
+                    ? `Purchase ${vehicle.make} ${vehicle.model}`
+                    : `Sign in to purchase ${vehicle.make} ${vehicle.model}`
+              }
+              className={`w-full flex items-center justify-center space-x-2 py-2.5 px-4 rounded-xl text-xs font-bold transition-all shadow-md min-h-[44px] focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
                 isOutOfStock
                   ? 'bg-slate-800 text-slate-500 border border-slate-700/50 cursor-not-allowed opacity-60'
                   : 'bg-indigo-600 hover:bg-indigo-500 text-white border border-indigo-400/30 hover:shadow-indigo-500/20'

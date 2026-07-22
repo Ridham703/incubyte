@@ -64,17 +64,20 @@ export const Register = () => {
               </div>
               <input
                 type="text"
+                id="reg-name"
+                aria-invalid={Boolean(errors.name)}
+                aria-describedby={errors.name ? 'name-error' : undefined}
                 {...register('name', {
                   required: 'Full name is required',
                   minLength: { value: 2, message: 'Name must be at least 2 characters' },
                 })}
                 className={`w-full pl-11 pr-4 py-3 bg-slate-800/80 border ${
                   errors.name ? 'border-red-500/80' : 'border-slate-700/80'
-                } rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm`}
+                } rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm`}
                 placeholder="John Doe"
               />
             </div>
-            {errors.name && <p className="mt-1.5 text-xs text-red-400 font-medium">{errors.name.message}</p>}
+            {errors.name && <p id="name-error" className="mt-1.5 text-xs text-red-400 font-medium">{errors.name.message}</p>}
           </div>
 
           {/* Email Field */}
@@ -88,6 +91,9 @@ export const Register = () => {
               </div>
               <input
                 type="email"
+                id="reg-email"
+                aria-invalid={Boolean(errors.email)}
+                aria-describedby={errors.email ? 'email-error' : undefined}
                 {...register('email', {
                   required: 'Email is required',
                   pattern: {
@@ -97,11 +103,11 @@ export const Register = () => {
                 })}
                 className={`w-full pl-11 pr-4 py-3 bg-slate-800/80 border ${
                   errors.email ? 'border-red-500/80' : 'border-slate-700/80'
-                } rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm`}
+                } rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm`}
                 placeholder="john@example.com"
               />
             </div>
-            {errors.email && <p className="mt-1.5 text-xs text-red-400 font-medium">{errors.email.message}</p>}
+            {errors.email && <p id="email-error" className="mt-1.5 text-xs text-red-400 font-medium">{errors.email.message}</p>}
           </div>
 
           {/* Password Field */}

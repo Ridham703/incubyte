@@ -37,12 +37,13 @@ export const RestockModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn" role="dialog" aria-modal="true" aria-labelledby="restock-modal-title">
       <div className="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
         <button
           onClick={onClose}
           disabled={loading}
-          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-200 rounded-xl hover:bg-slate-800/80 transition-all"
+          aria-label="Close restock dialog"
+          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-200 rounded-xl hover:bg-slate-800/80 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <X className="h-5 w-5" />
         </button>
@@ -51,7 +52,7 @@ export const RestockModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
           <div className="inline-flex p-3 bg-cyan-500/10 rounded-2xl border border-cyan-500/20 text-cyan-400 mb-2">
             <PackagePlus className="h-8 w-8" />
           </div>
-          <h3 className="text-2xl font-extrabold text-white">Restock Inventory</h3>
+          <h3 id="restock-modal-title" className="text-2xl font-extrabold text-white">Restock Inventory</h3>
           <p className="text-sm text-slate-400">Increase stock units for selected vehicle</p>
         </div>
 
@@ -77,7 +78,7 @@ export const RestockModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
               min="1"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
-              className="w-full py-3 px-4 bg-slate-800/80 border border-slate-700/80 rounded-xl text-slate-100 font-bold text-lg text-center focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+              className="w-full py-3 px-4 bg-slate-800/80 border border-slate-700/80 rounded-xl text-slate-100 font-bold text-lg text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
               required
             />
           </div>
@@ -87,14 +88,14 @@ export const RestockModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
               type="button"
               onClick={onClose}
               disabled={loading}
-              className="w-1/2 py-3 px-4 rounded-xl border border-slate-700 text-sm font-semibold text-slate-300 hover:bg-slate-800 hover:text-white transition-all disabled:opacity-50"
+              className="w-1/2 py-3 px-4 rounded-xl border border-slate-700 text-sm font-semibold text-slate-300 hover:bg-slate-800 hover:text-white transition-all disabled:opacity-50 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="w-1/2 flex items-center justify-center space-x-2 py-3 px-4 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 shadow-lg shadow-indigo-600/30 transition-all disabled:opacity-50"
+              className="w-1/2 flex items-center justify-center space-x-2 py-3 px-4 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 shadow-lg shadow-indigo-600/30 transition-all disabled:opacity-50 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-cyan-500"
             >
               {loading ? (
                 <span className="flex items-center space-x-2">

@@ -19,7 +19,7 @@ describe('Pagination Component', () => {
     expect(screen.getByText(/showing/i)).toBeInTheDocument();
     expect(screen.getByText('24')).toBeInTheDocument();
 
-    const page2Button = screen.getByRole('button', { name: '2' });
+    const page2Button = screen.getByRole('button', { name: /2/i });
     expect(page2Button).toBeInTheDocument();
 
     fireEvent.click(page2Button);

@@ -48,10 +48,11 @@ A production-ready, full-stack **Car Dealership Inventory Management System** bu
   - `src/components/ProtectedRoute.jsx`: Guards authenticated user routes
   - `src/components/AdminRoute.jsx`: Guards admin-only management routes
   - `src/components/Navbar.jsx` & `src/components/Layout.jsx`: Responsive top navigation bar with brand logo, user badges, role indicator, and layout wrapper
-- **Testing**: Vitest + React Testing Library (`npm test` inside `frontend`)
-- **UI & Animations**: Framer Motion, Lucide React, React Hot Toast
-- **HTTP Client**: Axios
-- **Testing**: React Testing Library & Vitest
+- **UI/UX, Accessibility & Responsiveness**:
+  - **WCAG Accessibility (a11y)**: Full ARIA support across components (`aria-label`, `aria-expanded`, `aria-controls`, `role="dialog"`, `aria-modal`, `aria-labelledby`, `aria-live`, `aria-busy`, `aria-invalid`, `aria-describedby`, `aria-current`). High-contrast focus rings (`focus:ring-2 focus:ring-indigo-500`) for seamless keyboard navigation.
+  - **Responsive Touch Design**: Adaptive layouts with mobile drawer menus, overflow table scrolling, and optimized touch targets (`min-h-[44px]`).
+  - **Animated Loading & Error UX**: Shimmer card loading skeletons with `aria-live="polite"` and `aria-busy="true"`. Contextual error banners with explicit retry/recovery actions.
+- **Testing**: React Testing Library & Vitest (`npm test` inside `frontend`) - 22/22 unit tests passing across 12 test suites.
 
 ---
 

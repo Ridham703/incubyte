@@ -136,7 +136,8 @@ export const AdminDashboard = () => {
 
         <button
           onClick={handleCreateNew}
-          className="flex items-center space-x-2 bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white px-5 py-3 rounded-xl font-bold text-sm shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 transition-all"
+          aria-label="Add new vehicle to inventory"
+          className="flex items-center space-x-2 bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white px-5 py-3 rounded-xl font-bold text-sm shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 transition-all min-h-[44px] focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <Plus className="h-5 w-5" />
           <span>Add New Vehicle</span>
@@ -199,10 +200,11 @@ export const AdminDashboard = () => {
             </div>
             <input
               type="text"
+              aria-label="Search inventory table"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search table by make, model, or year..."
-              className="w-full pl-10 pr-4 py-2 bg-slate-800/80 border border-slate-700/80 rounded-xl text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+              className="w-full pl-10 pr-4 py-2 bg-slate-800/80 border border-slate-700/80 rounded-xl text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
 
@@ -218,7 +220,8 @@ export const AdminDashboard = () => {
 
         {/* Inventory Data Table */}
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-slate-300">
+          <table className="w-full text-left text-sm text-slate-300" aria-label="Vehicle Inventory Table">
+            <caption className="sr-only">Inventory Management Table</caption>
             <thead className="bg-slate-950/60 text-slate-400 text-xs font-bold uppercase tracking-wider border-b border-slate-800">
               <tr>
                 <th className="py-3.5 px-4">Vehicle Model</th>
@@ -229,7 +232,7 @@ export const AdminDashboard = () => {
                 <th className="py-3.5 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60 font-medium">
+            <tbody className="divide-y divide-slate-800/60 font-medium" aria-live="polite" aria-busy={loading}>
               {loading ? (
                 <tr>
                   <td colSpan={6} className="py-8 text-center text-slate-400">
@@ -305,8 +308,9 @@ export const AdminDashboard = () => {
                         {/* Restock Button */}
                         <button
                           onClick={() => handleRestock(vehicle)}
+                          aria-label={`Restock ${vehicle.make} ${vehicle.model}`}
                           title="Restock Inventory"
-                          className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/20 transition-all"
+                          className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/20 transition-all focus:outline-none focus:ring-2 focus:ring-cyan-500"
                         >
                           <PackagePlus className="h-4 w-4" />
                         </button>
@@ -314,8 +318,9 @@ export const AdminDashboard = () => {
                         {/* Edit Button */}
                         <button
                           onClick={() => handleEdit(vehicle)}
+                          aria-label={`Edit ${vehicle.make} ${vehicle.model}`}
                           title="Edit Vehicle"
-                          className="p-2 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 hover:bg-indigo-500/20 transition-all"
+                          className="p-2 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 hover:bg-indigo-500/20 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         >
                           <Edit2 className="h-4 w-4" />
                         </button>
@@ -324,8 +329,9 @@ export const AdminDashboard = () => {
                         <button
                           onClick={() => handleDelete(vehicle)}
                           disabled={deletingId === vehicle._id}
+                          aria-label={`Delete ${vehicle.make} ${vehicle.model}`}
                           title="Delete Vehicle"
-                          className="p-2 rounded-xl bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500/20 transition-all disabled:opacity-50"
+                          className="p-2 rounded-xl bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500/20 transition-all disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-red-500"
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>

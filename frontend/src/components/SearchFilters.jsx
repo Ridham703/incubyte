@@ -32,15 +32,17 @@ export const SearchFilters = ({ filters, onFilterChange, onReset }) => {
           </div>
           <input
             type="text"
+            aria-label="Search vehicle make or model"
             value={filters.search || ''}
             onChange={(e) => handleChange('search', e.target.value)}
             placeholder="Search make or model (e.g. Tesla, Camry, Mustang)..."
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-800/80 border border-slate-700/80 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 text-sm transition-all"
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-800/80 border border-slate-700/80 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm transition-all"
           />
           {filters.search && (
             <button
               onClick={() => handleChange('search', '')}
-              className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-200"
+              aria-label="Clear search input"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-lg"
             >
               <X className="h-4 w-4" />
             </button>
@@ -50,7 +52,9 @@ export const SearchFilters = ({ filters, onFilterChange, onReset }) => {
         {/* Toggle Advanced Filters Button */}
         <button
           onClick={() => setShowAdvanced(!showAdvanced)}
-          className={`flex items-center justify-center space-x-2 px-4 py-2.5 rounded-xl border text-sm font-semibold transition-all ${
+          aria-label={showAdvanced ? 'Hide advanced filters' : 'Show advanced filters'}
+          aria-expanded={showAdvanced}
+          className={`flex items-center justify-center space-x-2 px-4 py-2.5 rounded-xl border text-sm font-semibold transition-all min-h-[44px] focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
             showAdvanced || hasActiveFilters
               ? 'bg-indigo-600/20 text-indigo-400 border-indigo-500/40'
               : 'bg-slate-800/80 text-slate-300 border-slate-700/80 hover:bg-slate-700/80'
