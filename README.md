@@ -21,6 +21,7 @@ A production-ready, full-stack **Car Dealership Inventory Management System** bu
 - `POST /api/auth/login` - User authentication & JWT token generation
 - `GET /api/auth/me` - Fetch authenticated user profile (Protected route)
 - `POST /api/vehicles` - Add new vehicle to inventory (Admin Protected route)
+- `GET /api/vehicles` - Fetch paginated vehicles with sorting (`sortBy`, `sortOrder`) & filtering (`make`, `fuelType`, `transmission`, `minPrice`, `maxPrice`, `search`)
 
 ### Frontend
 - **Framework**: React + Vite (JSX / JS)

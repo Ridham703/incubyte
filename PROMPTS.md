@@ -596,6 +596,48 @@ Established the production-ready MERN project architecture with strict TDD workf
 ### Final Outcome
 - Add Vehicle endpoint (`POST /api/vehicles`) fully implemented with Admin security, 100% test pass, clean linting, committed, and pushed to GitHub.
 
+---
+
+## Prompt 12: Get Vehicles API Endpoint Implementation (Pagination, Sorting, Filtering, TDD)
+
+### Exact Prompt
+> Create Get Vehicles endpoint.
+> 
+> Pagination.
+> 
+> Sorting.
+> 
+> Filtering.
+> 
+> Tests first.
+> 
+> Implement.
+> 
+> Run tests.
+> 
+> Commit.
+> 
+> Push.
+> 
+> Stop.
+
+### AI Response Summary
+- Implemented `GET /api/vehicles` endpoint supporting Pagination, Sorting, and Filtering following Repository-Service-Controller architecture:
+  - **Pagination**: Supports `page` (default 1) and `limit` (default 10), calculating offset skip and returning metadata (`page`, `limit`, `totalVehicles`, `totalPages`).
+  - **Sorting**: Supports `sortBy` (e.g. `price`, `year`, `createdAt`, `mileage`) and `sortOrder` (`asc` | `desc`).
+  - **Filtering**: Supports exact match (`make`, `fuelType`, `transmission`), range bounds (`minPrice`, `maxPrice`, `minYear`, `maxYear`), and regex keyword search (`search`) across `make` and `model`.
+- Wrote integration tests first in `src/tests/vehicle.get.test.ts` (RED phase verified).
+- Implemented `findAll` & `count` in `VehicleRepository`, `getVehicles` in `VehicleService`, and HTTP handler in `VehicleController` (GREEN phase - 36/36 tests passing across 7 test suites).
+- Verified ESLint with 0 errors/warnings across backend & frontend.
+- Updated `README.md` and `PROMPTS.md`.
+
+### Manual Changes
+- None.
+
+### Final Outcome
+- Get Vehicles endpoint (`GET /api/vehicles`) fully implemented with Pagination, Sorting, Filtering, 100% test pass, clean linting, committed, and pushed to GitHub.
+
+
 
 
 
