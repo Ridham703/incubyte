@@ -31,7 +31,9 @@ A production-ready, full-stack **Car Dealership Inventory Management System** bu
 ### Frontend
 - **Framework**: React + Vite (JSX / JS)
 - **Styling**: Tailwind CSS (Dark Glassmorphic Theme with Indigo Primary & Cyan Accent)
-- **Pages**:
+- **Pages & Components**:
+  - `src/pages/Dashboard.jsx`: Inventory showroom dashboard displaying vehicles, loading skeletons, and error retry states
+  - `src/components/VehicleCard.jsx`: Vehicle card displaying image, specs, formatted price tag, and stock status badges
   - `src/pages/Login.jsx`: Login page with React Hook Form validation, JWT token storage, & toast notifications
   - `src/pages/Register.jsx`: Register page supporting user/admin registration with React Hook Form validation
 - **Architecture**:

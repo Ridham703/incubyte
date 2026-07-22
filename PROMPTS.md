@@ -970,6 +970,44 @@ Established the production-ready MERN project architecture with strict TDD workf
 ### Final Outcome
 - Login and Register authentication pages fully implemented with validation, JWT storage, protected routing, 100% test pass, clean linter, committed, and pushed to GitHub.
 
+---
+
+## Prompt 21: Vehicle Inventory Dashboard Page (Responsive Cards, Loading & Error States, Testing)
+
+### Exact Prompt
+> Create dashboard.
+> 
+> Display all vehicles.
+> 
+> Responsive cards.
+> 
+> Loading state.
+> 
+> Error state.
+> 
+> Frontend tests.
+> 
+> Commit.
+> 
+> Push.
+> 
+> Stop.
+
+### AI Response Summary
+- Implemented Vehicle Inventory Dashboard page and VehicleCard component:
+  - **VehicleCard Component (`src/components/VehicleCard.jsx`)**: Renders vehicle image, make, model, manufacturing year, formatted price, mileage, fuel type, transmission, and color-coded inventory stock status badges (`In Stock`, `Low Stock`, `Out of Stock`).
+  - **Dashboard Page (`src/pages/Dashboard.jsx`)**: Fetches vehicle inventory from `GET /api/vehicles`. Implements animated Skeleton loader cards during loading, error banner with a "Try Again" retry button, empty state view, and responsive grid layout (`1-4 columns`).
+  - **Vitest & RTL Frontend Tests (`src/components/VehicleCard.test.jsx` & `src/pages/Dashboard.test.jsx`)**: Written unit tests verifying card rendering, loading state, error retry state, and vehicle list rendering (11/11 frontend tests passing across 7 test suites).
+- Verified ESLint with 0 errors/warnings across frontend & backend.
+- Updated `README.md` and `PROMPTS.md`.
+
+### Manual Changes
+- None.
+
+### Final Outcome
+- Vehicle Inventory Dashboard page fully implemented with responsive cards, loading skeletons, error handling, 100% test pass, clean linter, committed, and pushed to GitHub.
+
+
 
 
 

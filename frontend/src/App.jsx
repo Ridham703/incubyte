@@ -2,15 +2,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Layout from './components/Layout';
 import AdminRoute from './components/AdminRoute';
+import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
-
-const HomePlaceholder = () => (
-  <div className="p-8 bg-slate-900/60 rounded-2xl border border-slate-800 backdrop-blur-md">
-    <h1 className="text-3xl font-extrabold text-white mb-2">Vehicle Inventory Dashboard</h1>
-    <p className="text-slate-400">Welcome to AutoSphere. Explore premium cars in stock.</p>
-  </div>
-);
 
 const AdminPlaceholder = () => (
   <div className="p-8 bg-slate-900/60 rounded-2xl border border-slate-800 backdrop-blur-md">
@@ -25,7 +19,7 @@ export function App() {
       <Router>
         <Layout>
           <Routes>
-            <Route path="/" element={<HomePlaceholder />} />
+            <Route path="/" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route
