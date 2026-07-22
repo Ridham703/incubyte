@@ -1,24 +1,25 @@
 # Car Dealership Inventory Management System
 
-A production-ready, full-stack **Car Dealership Inventory Management System** built using the MERN stack with strict **Test-Driven Development (TDD)** and **Repository-Service-Controller Architecture**.
+A production-ready, full-stack **Car Dealership Inventory Management System** built with **TypeScript**, **Node.js**, **Express.js**, **MongoDB Atlas**, and **React (Vite)** adhering strictly to **Test-Driven Development (TDD)** and **Repository-Service-Controller Architecture**.
 
 ---
 
 ## 🚀 Tech Stack
 
 ### Backend
-- **Runtime**: Node.js (ES Modules)
+- **Runtime**: Node.js & TypeScript
 - **Framework**: Express.js
 - **Database**: MongoDB Atlas / Mongoose ORM
-- **Testing**: Jest & Supertest (Isolated TDD Environment)
-- **Security & Utilities**: JWT, bcryptjs, dotenv, cors, morgan
+- **Testing**: Jest (`ts-jest`) & Supertest (Isolated TDD Environment)
+- **Security & Utilities**: JWT, bcryptjs, dotenv, cors, morgan, Centralized Error Handling
 
 ### Frontend
-- **Framework**: React + Vite (JSX)
+- **Framework**: React + Vite (JSX / JS)
 - **Styling**: Tailwind CSS (Dark Glassmorphic Theme with Indigo Primary & Cyan Accent)
-- **State & Router**: React Router DOM, React Hook Form
+- **State & Routing**: React Router DOM, React Hook Form
 - **UI & Animations**: Framer Motion, Lucide React, React Hot Toast
 - **HTTP Client**: Axios
+- **Testing**: React Testing Library & Vitest
 
 ---
 
@@ -27,32 +28,56 @@ A production-ready, full-stack **Car Dealership Inventory Management System** bu
 ```
 incubyte/
 ├── PROMPTS.md                       # Execution prompt log & commit history
-├── README.md                        # Documentation & Setup instructions
-├── backend/                         # Node.js & Express API (TDD enabled)
+├── README.md                        # Project documentation & Setup guide
+├── .gitignore                       # System-wide git ignore rules
+├── .env.example                     # Environment template
+├── backend/                         # Express + TypeScript API (TDD Enabled)
 │   ├── src/
-│   │   ├── config/                  # DB & System Config
-│   │   ├── controllers/             # Request Handlers
-│   │   ├── middleware/              # Error & Validation Middleware
-│   │   ├── models/                  # Mongoose Data Schemas
+│   │   ├── config/                  # DB & System Configuration
+│   │   ├── controllers/             # Express Request Handlers
+│   │   ├── middleware/              # Centralized Error & Auth Middleware
+│   │   ├── models/                  # Mongoose Schemas & TypeScript Interfaces
 │   │   ├── repositories/            # Data Access Layer
 │   │   ├── routes/                  # API Endpoint Definitions
 │   │   ├── services/                # Core Business Logic
-│   │   ├── tests/                   # TDD Jest Test Suites
-│   │   └── app.js                   # Application Entrypoint
-└── frontend/                        # React + Vite Glassmorphic UI
+│   │   ├── utils/                   # Shared Helper Utilities
+│   │   ├── tests/                   # TDD Jest Suite (`*.test.ts`)
+│   │   ├── app.ts                   # Express App Configuration
+│   │   └── server.ts                # Server Listen Entrypoint
+│   ├── tsconfig.json                # TypeScript Config
+│   ├── jest.config.js               # Jest Config (`ts-jest`)
+│   └── package.json
+└── frontend/                        # React + Vite Glassmorphic Client
     ├── src/
-    │   ├── api/                     # Axios API Config
-    │   ├── components/              # Modular Glassmorphism Components
-    │   └── App.jsx                  # Main Application Component
+    │   ├── api/                     # Axios API Instance & Endpoints
+    │   ├── components/              # Modular Glassmorphism UI Components
+    │   ├── context/                 # React Context Providers
+    │   ├── hooks/                   # Custom Hooks
+    │   ├── pages/                   # Application Pages & Views
+    │   ├── routes/                  # React Router Route Setup
+    │   ├── styles/                  # Custom CSS & Utility Classes
+    │   ├── test/                    # RTL Setup Configuration
+    │   ├── App.jsx                  # Main Application Component
+    │   ├── App.test.jsx             # React Testing Library Unit Test
+    │   └── main.jsx                 # Vite Entry Point
+    ├── vite.config.js               # Vite & Vitest Configuration
+    ├── tailwind.config.js           # Glassmorphism Color Palette
+    └── package.json
 ```
 
 ---
 
-## 🧪 Testing (TDD Workflow)
+## 🧪 Testing (Strict TDD Workflow)
 
-Run the backend test suite:
+### Run Backend Tests (Jest + Supertest)
 ```bash
 cd backend
+npm test
+```
+
+### Run Frontend Tests (React Testing Library + Vitest)
+```bash
+cd frontend
 npm test
 ```
 
@@ -66,10 +91,21 @@ cd backend
 npm install
 npm run dev
 ```
+The API server will run on `http://localhost:5000`. Test the health check at `http://localhost:5000/api/health`.
 
 ### 2. Run Frontend Client
 ```bash
 cd frontend
 npm install
 npm run dev
+```
+The Vite development server will run on `http://localhost:3000`.
+
+---
+
+## 🔒 Environment Configuration
+
+Copy `.env.example` to `.env` in both `/backend` and root directories before running:
+```bash
+cp .env.example .env
 ```
