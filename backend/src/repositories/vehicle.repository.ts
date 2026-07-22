@@ -25,6 +25,14 @@ export class VehicleRepository {
     ).exec();
   }
 
+  async decrementStock(id: string, quantity = 1): Promise<IVehicle | null> {
+    return Vehicle.findOneAndUpdate(
+      { _id: id, isDeleted: { $ne: true }, stock: { $gte: quantity } },
+      { $inc: { stock: -quantity } },
+      { new: true }
+    ).exec();
+  }
+
   async findAll(
     filter: Record<string, unknown> = {},
     sort: Record<string, 1 | -1> = { createdAt: -1 },

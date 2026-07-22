@@ -41,6 +41,25 @@ export class VehicleController {
     }
   }
 
+  async purchaseVehicle(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const quantity = req.body.quantity !== undefined ? Number(req.body.quantity) : 1;
+      const result = await vehicleService.purchaseVehicle(req.params.id, quantity);
+      res.status(200).json({
+        status: 'success',
+        message: 'Vehicle purchased successfully',
+        data: {
+          vehicleId: result.vehicle._id,
+          purchasedQuantity: result.purchasedQuantity,
+          remainingStock: result.remainingStock,
+          vehicle: result.vehicle,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async getVehicles(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const result = await vehicleService.getVehicles(req.query);

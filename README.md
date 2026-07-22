@@ -25,6 +25,7 @@ A production-ready, full-stack **Car Dealership Inventory Management System** bu
 - `GET /api/vehicles/search` - Multi-attribute vehicle search (`make`, `model`, `minPrice`, `maxPrice`, `minYear`, `maxYear`, `fuelType`, `transmission`, `page`, `limit`)
 - `PUT /api/vehicles/:id` / `PATCH /api/vehicles/:id` - Update vehicle details (Admin Protected route)
 - `DELETE /api/vehicles/:id` - Soft delete vehicle from inventory (Admin Protected route)
+- `POST /api/vehicles/:id/purchase` - Purchase vehicle and decrement stock (Protected route)
 
 ### Frontend
 - **Framework**: React + Vite (JSX / JS)

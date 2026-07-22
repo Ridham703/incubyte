@@ -769,6 +769,49 @@ Established the production-ready MERN project architecture with strict TDD workf
 ### Final Outcome
 - Delete Vehicle API endpoint (`DELETE /api/vehicles/:id`) fully implemented with Soft Delete strategy, Admin security, 100% test pass, clean linting, committed, and pushed to GitHub.
 
+---
+
+## Prompt 16: Purchase Vehicle API Endpoint Implementation (Stock Decrement, Negative Safeguards, TDD)
+
+### Exact Prompt
+> Implement Purchase endpoint.
+> 
+> Decrease stock.
+> 
+> Prevent negative inventory.
+> 
+> Return proper response.
+> 
+> Write tests first.
+> 
+> Implement.
+> 
+> Run tests.
+> 
+> Commit.
+> 
+> Push.
+> 
+> Stop.
+
+### AI Response Summary
+- Implemented `POST /api/vehicles/:id/purchase` Purchase Vehicle endpoint with stock decrement and negative inventory safeguards following Repository-Service-Controller architecture:
+  - **VehicleRepository**: Added `decrementStock` atomic operation using Mongoose `$inc: { stock: -quantity }` with atomic stock condition `{ stock: { $gte: quantity } }`.
+  - **VehicleService**: Validates purchase quantity >= 1, vehicle existence, and sufficient inventory availability before purchase (`400 Bad Request` if stock < quantity).
+  - **VehicleController**: Processes HTTP requests and returns `200 OK` with remaining stock and purchase details payload.
+  - **VehicleRoutes**: Protects `POST /:id/purchase` route with `protect` middleware.
+- Wrote integration tests first in `src/tests/vehicle.purchase.test.ts` (RED phase verified).
+- Implemented all modules and verified Jest test suite passing (GREEN phase - 53/53 tests passing across 11 test suites).
+- Verified ESLint with 0 errors/warnings across backend & frontend.
+- Updated `README.md` and `PROMPTS.md`.
+
+### Manual Changes
+- None.
+
+### Final Outcome
+- Purchase Vehicle API endpoint (`POST /api/vehicles/:id/purchase`) fully implemented with negative inventory safeguards, 100% test pass, clean linting, committed, and pushed to GitHub.
+
+
 
 
 

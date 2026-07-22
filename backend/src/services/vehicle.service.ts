@@ -142,6 +142,35 @@ export class VehicleService {
     return deleted;
   }
 
+  async purchaseVehicle(
+    id: string,
+    quantity = 1
+  ): Promise<{ vehicle: IVehicle; purchasedQuantity: number; remainingStock: number }> {
+    if (quantity < 1) {
+      throw new AppError('Purchase quantity must be at least 1', 400);
+    }
+
+    const vehicle = await this.vehicleRepo.findById(id);
+    if (!vehicle) {
+      throw new AppError('Vehicle not found', 404);
+    }
+
+    if (vehicle.stock < quantity) {
+      throw new AppError('Insufficient stock available for purchase', 400);
+    }
+
+    const updated = await this.vehicleRepo.decrementStock(id, quantity);
+    if (!updated) {
+      throw new AppError('Insufficient stock available for purchase', 400);
+    }
+
+    return {
+      vehicle: updated,
+      purchasedQuantity: quantity,
+      remainingStock: updated.stock,
+    };
+  }
+
   async getVehicles(query: GetVehiclesQuery): Promise<PaginatedVehiclesResponse> {
     const page = Math.max(1, parseInt(String(query.page || '1'), 10));
     const limit = Math.max(1, parseInt(String(query.limit || '10'), 10));

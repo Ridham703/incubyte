@@ -23,4 +23,8 @@ router.delete('/:id', protect, authorize('admin'), (req, res, next) =>
   vehicleController.deleteVehicle(req, res, next)
 );
 
+router.post('/:id/purchase', protect, (req, res, next) =>
+  vehicleController.purchaseVehicle(req, res, next)
+);
+
 export default router;
