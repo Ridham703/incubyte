@@ -19,4 +19,8 @@ router.patch('/:id', protect, authorize('admin'), (req, res, next) =>
   vehicleController.updateVehicle(req, res, next)
 );
 
+router.delete('/:id', protect, authorize('admin'), (req, res, next) =>
+  vehicleController.deleteVehicle(req, res, next)
+);
+
 export default router;

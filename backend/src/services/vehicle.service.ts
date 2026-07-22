@@ -128,6 +128,20 @@ export class VehicleService {
     return updated;
   }
 
+  async deleteVehicle(id: string): Promise<IVehicle> {
+    const existing = await this.vehicleRepo.findById(id);
+    if (!existing) {
+      throw new AppError('Vehicle not found', 404);
+    }
+
+    const deleted = await this.vehicleRepo.softDelete(id);
+    if (!deleted) {
+      throw new AppError('Vehicle not found', 404);
+    }
+
+    return deleted;
+  }
+
   async getVehicles(query: GetVehiclesQuery): Promise<PaginatedVehiclesResponse> {
     const page = Math.max(1, parseInt(String(query.page || '1'), 10));
     const limit = Math.max(1, parseInt(String(query.limit || '10'), 10));

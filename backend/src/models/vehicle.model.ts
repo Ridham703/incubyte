@@ -14,6 +14,8 @@ export interface IVehicle extends Omit<Document, 'model'> {
   stock: number;
   image: string;
   description?: string;
+  isDeleted?: boolean;
+  deletedAt?: Date | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -78,6 +80,14 @@ const vehicleSchema = new Schema<IVehicle>(
     description: {
       type: String,
       trim: true,
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    deletedAt: {
+      type: Date,
+      default: null,
     },
   },
   {

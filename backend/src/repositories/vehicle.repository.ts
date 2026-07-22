@@ -7,11 +7,22 @@ export class VehicleRepository {
   }
 
   async findById(id: string): Promise<IVehicle | null> {
-    return Vehicle.findById(id).exec();
+    return Vehicle.findOne({ _id: id, isDeleted: { $ne: true } }).exec();
   }
 
   async update(id: string, updateData: Partial<IVehicle>): Promise<IVehicle | null> {
-    return Vehicle.findByIdAndUpdate(id, updateData, { new: true, runValidators: true }).exec();
+    return Vehicle.findOneAndUpdate({ _id: id, isDeleted: { $ne: true } }, updateData, {
+      new: true,
+      runValidators: true,
+    }).exec();
+  }
+
+  async softDelete(id: string): Promise<IVehicle | null> {
+    return Vehicle.findOneAndUpdate(
+      { _id: id, isDeleted: { $ne: true } },
+      { isDeleted: true, deletedAt: new Date() },
+      { new: true }
+    ).exec();
   }
 
   async findAll(
@@ -20,11 +31,13 @@ export class VehicleRepository {
     skip = 0,
     limit = 10
   ): Promise<IVehicle[]> {
-    return Vehicle.find(filter).sort(sort).skip(skip).limit(limit).exec();
+    const activeFilter = { ...filter, isDeleted: { $ne: true } };
+    return Vehicle.find(activeFilter).sort(sort).skip(skip).limit(limit).exec();
   }
 
   async count(filter: Record<string, unknown> = {}): Promise<number> {
-    return Vehicle.countDocuments(filter).exec();
+    const activeFilter = { ...filter, isDeleted: { $ne: true } };
+    return Vehicle.countDocuments(activeFilter).exec();
   }
 }
 

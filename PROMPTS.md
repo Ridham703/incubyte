@@ -728,6 +728,48 @@ Established the production-ready MERN project architecture with strict TDD workf
 ### Final Outcome
 - Update Vehicle API endpoint (`PUT /api/vehicles/:id`) fully implemented with Admin security, 100% test pass, clean linting, committed, and pushed to GitHub.
 
+---
+
+## Prompt 15: Delete Vehicle API Implementation (Soft Delete, Admin Protected, TDD)
+
+### Exact Prompt
+> Implement Delete Vehicle API.
+> 
+> Admin only.
+> 
+> Soft delete preferred.
+> 
+> Tests first.
+> 
+> Implement.
+> 
+> Run tests.
+> 
+> Commit.
+> 
+> Push.
+> 
+> Stop.
+
+### AI Response Summary
+- Implemented `DELETE /api/vehicles/:id` Delete Vehicle endpoint using a **Soft Delete** pattern (`isDeleted: true`, `deletedAt: Date`) and Admin protection following Repository-Service-Controller architecture:
+  - **Vehicle Model**: Added `isDeleted` (boolean, default false) and `deletedAt` (Date, default null) fields.
+  - **VehicleRepository**: Added `softDelete` method and updated queries (`findAll`, `count`, `findById`, `update`) to automatically filter out soft-deleted records (`isDeleted: { $ne: true }`).
+  - **VehicleService**: Checks vehicle existence (`404 Not Found` if missing or deleted) and executes soft deletion.
+  - **VehicleController**: Processes HTTP requests and returns `200 OK` with confirmation message.
+  - **VehicleRoutes**: Protects `DELETE /:id` route with `protect` and `authorize('admin')` middleware.
+- Wrote integration tests first in `src/tests/vehicle.delete.test.ts` (RED phase verified).
+- Implemented all modules and verified Jest test suite passing (GREEN phase - 48/48 tests passing across 10 test suites).
+- Verified ESLint with 0 errors/warnings across backend & frontend.
+- Updated `README.md` and `PROMPTS.md`.
+
+### Manual Changes
+- None.
+
+### Final Outcome
+- Delete Vehicle API endpoint (`DELETE /api/vehicles/:id`) fully implemented with Soft Delete strategy, Admin security, 100% test pass, clean linting, committed, and pushed to GitHub.
+
+
 
 
 
