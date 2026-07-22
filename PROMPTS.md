@@ -1189,6 +1189,56 @@ Established the production-ready MERN project architecture with strict TDD workf
 ### Final Outcome
 - Application accessibility, responsiveness, loading states, error handling, and UX improved. All 22 frontend tests passing. Linter clean. Committed and pushed to GitHub main branch.
 
+---
+
+## Prompt 27: Comprehensive README.md Completion
+
+### User Prompt
+> Complete README.md.
+> Include:
+> Project Overview
+> Architecture
+> Tech Stack
+> Installation
+> Running locally
+> Environment variables
+> API documentation
+> Folder structure
+> Testing
+> Deployment
+> Screenshots
+> AI usage
+> Contribution
+> Troubleshooting
+> License
+> Update PROMPTS.md.
+> Commit.
+> Push.
+> Stop.
+
+### AI Response Summary
+- Updated `README.md` with complete documentation covering all 16 required sections:
+  - **Project Overview**: Detailed core capabilities (Showroom, Search/Filter, Purchase flow, Admin portal, Add/Edit forms, Restock, WCAG accessibility).
+  - **Architecture**: Decoupled Repository-Service-Controller diagram and guarantees.
+  - **Tech Stack**: Backend and Frontend technology stack definitions.
+  - **Installation & Running Locally**: Step-by-step setup and development instructions.
+  - **Environment Variables**: Complete `.env.example` configurations.
+  - **API Documentation**: Detailed Public and Protected endpoint tables with roles.
+  - **Folder Structure**: Clean tree structure mapping backend and frontend codebase.
+  - **Testing**: Backend Jest + Supertest (58/58 passing) and Frontend Vitest + RTL (22/22 passing) execution commands.
+  - **Deployment**: Production deployment guidelines for Render/Railway and Vercel/Netlify.
+  - **Screenshots & Showcase**: Visual component descriptions.
+  - **AI Usage**: Transparency report detailing DeepMind Antigravity collaboration scope.
+  - **Contribution, Troubleshooting & License**: Contribution steps, common issue resolution, and MIT license.
+- Appended Prompt 27 log to `PROMPTS.md`.
+
+### Manual Changes
+- None.
+
+### Final Outcome
+- `README.md` fully completed with all 16 required sections. Logged, committed, and pushed to GitHub main branch.
+
+
 
 
 
