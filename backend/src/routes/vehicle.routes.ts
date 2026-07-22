@@ -27,4 +27,8 @@ router.post('/:id/purchase', protect, (req, res, next) =>
   vehicleController.purchaseVehicle(req, res, next)
 );
 
+router.post('/:id/restock', protect, authorize('admin'), (req, res, next) =>
+  vehicleController.restockVehicle(req, res, next)
+);
+
 export default router;

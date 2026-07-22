@@ -44,7 +44,7 @@ export interface PaginatedVehiclesResponse {
 }
 
 export class VehicleService {
-  constructor(private vehicleRepo: VehicleRepository = vehicleRepository) {}
+  constructor(private vehicleRepo: VehicleRepository = vehicleRepository) { }
 
   async addVehicle(data: CreateVehicleDTO): Promise<IVehicle> {
     if (!data.make || !data.model || !data.year || data.price === undefined || data.mileage === undefined || !data.fuelType || !data.transmission) {
@@ -168,6 +168,31 @@ export class VehicleService {
       vehicle: updated,
       purchasedQuantity: quantity,
       remainingStock: updated.stock,
+    };
+  }
+
+  async restockVehicle(
+    id: string,
+    quantity: number
+  ): Promise<{ vehicle: IVehicle; addedQuantity: number; newStock: number }> {
+    if (!quantity || typeof quantity !== 'number' || quantity < 1) {
+      throw new AppError('Restock quantity must be at least 1', 400);
+    }
+
+    const vehicle = await this.vehicleRepo.findById(id);
+    if (!vehicle) {
+      throw new AppError('Vehicle not found', 404);
+    }
+
+    const updated = await this.vehicleRepo.incrementStock(id, quantity);
+    if (!updated) {
+      throw new AppError('Vehicle not found', 404);
+    }
+
+    return {
+      vehicle: updated,
+      addedQuantity: quantity,
+      newStock: updated.stock,
     };
   }
 

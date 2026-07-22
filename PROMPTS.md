@@ -811,6 +811,47 @@ Established the production-ready MERN project architecture with strict TDD workf
 ### Final Outcome
 - Purchase Vehicle API endpoint (`POST /api/vehicles/:id/purchase`) fully implemented with negative inventory safeguards, 100% test pass, clean linting, committed, and pushed to GitHub.
 
+---
+
+## Prompt 17: Restock Vehicle API Endpoint Implementation (Atomic Stock Increment, Admin Protected, TDD)
+
+### Exact Prompt
+> Implement Restock endpoint.
+> 
+> Admin only.
+> 
+> Increase inventory.
+> 
+> Tests first.
+> 
+> Implement.
+> 
+> Run tests.
+> 
+> Commit.
+> 
+> Push.
+> 
+> Stop.
+
+### AI Response Summary
+- Implemented `POST /api/vehicles/:id/restock` Restock Vehicle endpoint with atomic stock increment and Admin protection following Repository-Service-Controller architecture:
+  - **VehicleRepository**: Added `incrementStock` atomic operation using Mongoose `$inc: { stock: quantity }`.
+  - **VehicleService**: Validates restock quantity >= 1 (`400 Bad Request` if invalid) and vehicle existence (`404 Not Found` if missing or deleted).
+  - **VehicleController**: Processes HTTP requests and returns `200 OK` with updated stock payload.
+  - **VehicleRoutes**: Protects `POST /:id/restock` route with `protect` and `authorize('admin')` middleware.
+- Wrote integration tests first in `src/tests/vehicle.restock.test.ts` (RED phase verified).
+- Implemented all modules and verified Jest test suite passing (GREEN phase - 58/58 tests passing across 12 test suites).
+- Verified ESLint with 0 errors/warnings across backend & frontend.
+- Updated `README.md` and `PROMPTS.md`.
+
+### Manual Changes
+- None.
+
+### Final Outcome
+- Restock Vehicle API endpoint (`POST /api/vehicles/:id/restock`) fully implemented with Admin authorization, 100% test pass, clean linting, committed, and pushed to GitHub.
+
+
 
 
 

@@ -26,6 +26,7 @@ A production-ready, full-stack **Car Dealership Inventory Management System** bu
 - `PUT /api/vehicles/:id` / `PATCH /api/vehicles/:id` - Update vehicle details (Admin Protected route)
 - `DELETE /api/vehicles/:id` - Soft delete vehicle from inventory (Admin Protected route)
 - `POST /api/vehicles/:id/purchase` - Purchase vehicle and decrement stock (Protected route)
+- `POST /api/vehicles/:id/restock` - Restock vehicle and increment stock (Admin Protected route)
 
 ### Frontend
 - **Framework**: React + Vite (JSX / JS)
