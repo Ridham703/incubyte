@@ -2,19 +2,23 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
-import { X, PlusCircle, Edit3, Car, Image as ImageIcon } from 'lucide-react';
+import { X, PlusCircle, Edit3, Car, Image as ImageIcon, Upload, Link as LinkIcon, Trash2 } from 'lucide-react';
 
 const FUEL_TYPES = ['Gasoline', 'Diesel', 'Electric', 'Hybrid', 'Plug-in Hybrid'];
 const TRANSMISSION_TYPES = ['Automatic', 'Manual', 'CVT'];
 
 export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
   const [loading, setLoading] = useState(false);
+  const [imageMode, setImageMode] = useState('url'); // 'url' or 'file'
+  const [imagePreview, setImagePreview] = useState('');
   const isEditing = Boolean(vehicle && vehicle._id);
 
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -31,6 +35,8 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
     },
   });
 
+  const watchImageUrl = watch('image');
+
   useEffect(() => {
     if (isOpen) {
       if (vehicle) {
@@ -46,6 +52,7 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
           image: vehicle.image || '',
           description: vehicle.description || '',
         });
+        setImagePreview(vehicle.image || '');
       } else {
         reset({
           make: '',
@@ -59,9 +66,47 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
           image: '',
           description: '',
         });
+        setImagePreview('');
       }
+      setImageMode('url');
     }
   }, [isOpen, vehicle, reset]);
+
+  // Update preview when URL changes in URL mode
+  useEffect(() => {
+    if (imageMode === 'url') {
+      setImagePreview(watchImageUrl || '');
+    }
+  }, [watchImageUrl, imageMode]);
+
+  // File Upload Handler
+  const handleFileUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        toast.error('Please upload a valid image file');
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('Image size must be less than 5MB');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64Data = reader.result;
+        setValue('image', base64Data);
+        setImagePreview(base64Data);
+        toast.success('Image loaded for preview!');
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const clearImage = () => {
+    setValue('image', '');
+    setImagePreview('');
+  };
 
   if (!isOpen) return null;
 
@@ -115,7 +160,7 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
           </div>
           <div>
             <h3 className="text-2xl font-extrabold text-white">
-              {isEditing ? 'Edit Vehicle Details' : 'Add New Vehicle'}
+              {isEditing ? 'Vehicle Edit Form' : 'Vehicle Add Form'}
             </h3>
             <p className="text-xs text-slate-400">Fill in the specification details for dealership inventory</p>
           </div>
@@ -131,7 +176,10 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
               </label>
               <input
                 type="text"
-                {...register('make', { required: 'Make is required' })}
+                {...register('make', {
+                  required: 'Make is required',
+                  minLength: { value: 2, message: 'Make must be at least 2 characters' },
+                })}
                 placeholder="e.g. BMW, Tesla, Audi"
                 className={`w-full py-2.5 px-3.5 bg-slate-800/80 border ${
                   errors.make ? 'border-red-500/80' : 'border-slate-700/80'
@@ -147,7 +195,10 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
               </label>
               <input
                 type="text"
-                {...register('model', { required: 'Model is required' })}
+                {...register('model', {
+                  required: 'Model is required',
+                  minLength: { value: 2, message: 'Model must be at least 2 characters' },
+                })}
                 placeholder="e.g. M3, Model 3, RS5"
                 className={`w-full py-2.5 px-3.5 bg-slate-800/80 border ${
                   errors.model ? 'border-red-500/80' : 'border-slate-700/80'
@@ -166,7 +217,7 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
                 {...register('year', {
                   required: 'Year is required',
                   min: { value: 1900, message: 'Year must be >= 1900' },
-                  max: { value: new Date().getFullYear() + 2, message: 'Invalid year' },
+                  max: { value: new Date().getFullYear() + 2, message: 'Invalid manufacturing year' },
                 })}
                 className={`w-full py-2.5 px-3.5 bg-slate-800/80 border ${
                   errors.year ? 'border-red-500/80' : 'border-slate-700/80'
@@ -266,22 +317,86 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
             </div>
           </div>
 
-          {/* Image URL */}
-          <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-              Image URL (Optional)
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                <ImageIcon className="h-4 w-4" />
+          {/* Image Upload Field */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
+                Vehicle Image Field
+              </label>
+              <div className="flex items-center space-x-1 bg-slate-800 p-1 rounded-xl border border-slate-700">
+                <button
+                  type="button"
+                  onClick={() => setImageMode('url')}
+                  className={`flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+                    imageMode === 'url' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  <LinkIcon className="h-3 w-3" />
+                  <span>URL Input</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setImageMode('file')}
+                  className={`flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+                    imageMode === 'file' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  <Upload className="h-3 w-3" />
+                  <span>Upload File</span>
+                </button>
               </div>
-              <input
-                type="url"
-                {...register('image')}
-                placeholder="https://images.unsplash.com/..."
-                className="w-full pl-10 pr-3.5 py-2.5 bg-slate-800/80 border border-slate-700/80 rounded-xl text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
-              />
             </div>
+
+            {imageMode === 'url' ? (
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                  <ImageIcon className="h-4 w-4" />
+                </div>
+                <input
+                  type="url"
+                  {...register('image')}
+                  placeholder="https://images.unsplash.com/photo-..."
+                  className="w-full pl-10 pr-3.5 py-2.5 bg-slate-800/80 border border-slate-700/80 rounded-xl text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                />
+              </div>
+            ) : (
+              <div className="border-2 border-dashed border-slate-700 hover:border-indigo-500/60 rounded-2xl p-4 text-center bg-slate-800/40 transition-colors">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  id="vehicle-image-upload"
+                  className="hidden"
+                />
+                <label
+                  htmlFor="vehicle-image-upload"
+                  className="cursor-pointer flex flex-col items-center justify-center space-y-2"
+                >
+                  <div className="p-3 bg-indigo-500/10 rounded-full text-indigo-400">
+                    <Upload className="h-6 w-6" />
+                  </div>
+                  <div className="text-xs font-semibold text-slate-200">
+                    Click to upload vehicle photo <span className="text-indigo-400">(Max 5MB)</span>
+                  </div>
+                  <div className="text-[11px] text-slate-400">Supports PNG, JPG, WEBP formats</div>
+                </label>
+              </div>
+            )}
+
+            {/* Live Image Preview */}
+            {imagePreview && (
+              <div className="relative mt-3 rounded-2xl overflow-hidden border border-slate-700 bg-slate-950 aspect-[16/7]">
+                <img src={imagePreview} alt="Live Vehicle Preview" className="w-full h-full object-cover" />
+                <button
+                  type="button"
+                  onClick={clearImage}
+                  className="absolute top-2 right-2 p-1.5 bg-red-600/90 text-white rounded-xl hover:bg-red-500 transition-all shadow-lg"
+                  title="Remove Image"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Description */}
@@ -292,7 +407,7 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
             <textarea
               rows={2}
               {...register('description')}
-              placeholder="Provide key features or details..."
+              placeholder="Provide key features or vehicle details..."
               className="w-full py-2.5 px-3.5 bg-slate-800/80 border border-slate-700/80 rounded-xl text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 resize-none"
             />
           </div>

@@ -1116,6 +1116,43 @@ Established the production-ready MERN project architecture with strict TDD workf
 ### Final Outcome
 - Admin management dashboard fully implemented with real-time statistics, inventory CRUD table, modals, 100% test pass, clean linter, committed, and pushed to GitHub.
 
+---
+
+## Prompt 25: Vehicle Add & Edit Forms (Validation, Image File Upload with Live Preview, Testing)
+
+### Exact Prompt
+> Vehicle Add Form.
+> 
+> Vehicle Edit Form.
+> 
+> Validation.
+> 
+> Image upload field.
+> 
+> Tests.
+> 
+> Commit.
+> 
+> Push.
+> 
+> Stop.
+
+### AI Response Summary
+- Enhanced Vehicle Add Form and Vehicle Edit Form with Image File Upload and validation:
+  - **Vehicle Add & Edit Form (`src/components/VehicleModal.jsx`)**: Form modal supporting both creation (`POST /api/vehicles`) and editing (`PUT /api/vehicles/:id`).
+  - **Image File Upload Field**: Features an Image Mode Toggle allowing users to choose between **Direct Image URL** input and **File Dropzone Upload** (`<input type="file" accept="image/*">`). Reads uploaded images via `FileReader` to generate Base64 data URIs for instant preview and backend submission. Includes live image thumbnail preview with a clear action button.
+  - **Comprehensive Validation (`react-hook-form`)**: Enforces required fields, minimum 2-character strings for Make/Model, valid manufacturing year bounds (1900 to current year + 2), non-negative constraints for Price, Mileage, and Stock (`>= 0`), and Fuel Type / Transmission selection.
+  - **Vitest & RTL Frontend Tests (`src/components/VehicleModal.test.jsx`)**: Written unit tests verifying Add Form rendering, Edit Form pre-filling, input validation, and API submissions (22/22 frontend tests passing across 12 test suites).
+- Verified ESLint with 0 errors/warnings across frontend & backend.
+- Updated `README.md` and `PROMPTS.md`.
+
+### Manual Changes
+- None.
+
+### Final Outcome
+- Vehicle Add & Edit forms fully implemented with Image File Upload, live preview, comprehensive validation, 100% test pass, clean linter, committed, and pushed to GitHub.
+
+
 
 
 
