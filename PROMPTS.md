@@ -496,4 +496,63 @@ Established the production-ready MERN project architecture with strict TDD workf
 ### Final Outcome
 - JWT Authentication & Admin Authorization middleware fully implemented with 100% test pass, clean linting, committed, and pushed to GitHub.
 
+---
+
+## Prompt 10: Vehicle Schema & Model Implementation (TDD)
+
+### Exact Prompt
+> Create Vehicle schema.
+> 
+> Fields
+> 
+> Make
+> 
+> Model
+> 
+> Year
+> 
+> Price
+> 
+> Mileage
+> 
+> Fuel Type
+> 
+> Transmission
+> 
+> Stock
+> 
+> Image
+> 
+> Description
+> 
+> Validation
+> 
+> Tests first.
+> 
+> Implement.
+> 
+> Commit.
+> 
+> Push.
+> 
+> Stop.
+
+### AI Response Summary
+- Created Vehicle Mongoose Schema & Model (`src/models/vehicle.model.ts`) with `IVehicle` interface and field validations:
+  - Required fields: `make`, `model`, `year`, `price`, `mileage`, `fuelType`, `transmission`, `stock`.
+  - Bound validations: Non-negative checks for `price`, `mileage`, `stock`, valid year range (1900 to current year + 1).
+  - Enum constraints: `fuelType` (`['Gasoline', 'Diesel', 'Electric', 'Hybrid', 'Plug-in Hybrid']`), `transmission` (`['Automatic', 'Manual', 'CVT']`).
+  - Default values: `stock` default 1, `image` default stock placeholder URL.
+- Wrote TDD unit tests first in `src/tests/vehicle.model.test.ts` (RED phase verified).
+- Implemented model and verified Jest test suite passing (GREEN phase - 27/27 tests passing across 5 test suites).
+- Verified ESLint with 0 errors/warnings.
+- Updated `README.md` and `PROMPTS.md`.
+
+### Manual Changes
+- None.
+
+### Final Outcome
+- Vehicle Mongoose Schema & Model fully implemented with 100% test pass, clean linting, committed, and pushed to GitHub.
+
+
 
