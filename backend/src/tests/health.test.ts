@@ -12,4 +12,13 @@ describe('GET /api/health', () => {
       timestamp: expect.any(String),
     });
   });
+
+  it('should return 404 Not Found for unhandled API endpoints', async () => {
+    const response = await request(app).get('/api/nonexistent-route');
+
+    expect(response.status).toBe(404);
+    expect(response.body.status).toBe('error');
+    expect(response.body.statusCode).toBe(404);
+    expect(response.body.message).toContain('Cannot find /api/nonexistent-route');
+  });
 });

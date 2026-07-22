@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import NotFound from './pages/NotFound';
 
 export function App() {
   return (
@@ -24,6 +25,7 @@ export function App() {
                 </AdminRoute>
               }
             />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
       </Router>
