@@ -6,6 +6,7 @@ export interface AuthRequest extends Request {
   user?: {
     id: string;
     role: string;
+    [key: string]: unknown;
   };
 }
 
@@ -28,4 +29,20 @@ export const protect = (req: AuthRequest, _res: Response, next: NextFunction): v
   } catch (error) {
     return next(new AppError('Authentication failed: Invalid or expired token', 401));
   }
+};
+
+export const authorize = (...roles: string[]) => {
+  return (req: AuthRequest, _res: Response, next: NextFunction): void => {
+    if (!req.user) {
+      return next(new AppError('Authentication failed: User identity missing', 401));
+    }
+
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new AppError('Access denied: Admin privileges required to access this resource', 403)
+      );
+    }
+
+    next();
+  };
 };

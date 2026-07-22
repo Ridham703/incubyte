@@ -458,3 +458,42 @@ Established the production-ready MERN project architecture with strict TDD workf
 ### Final Outcome
 - Authentication system fully implemented with 100% test pass, clean linting, committed, and pushed to GitHub.
 
+---
+
+## Prompt 9: JWT Authentication & Admin Authorization Middleware Implementation (TDD)
+
+### Exact Prompt
+> Implement JWT middleware.
+> 
+> Implement Admin middleware.
+> 
+> Protect routes.
+> 
+> Write tests first.
+> 
+> Implement.
+> 
+> Run tests.
+> 
+> Commit.
+> 
+> Push.
+> 
+> Stop.
+
+### AI Response Summary
+- Implemented JWT authentication (`protect`) and Role-Based Access Control (`authorize(...roles)`) middleware adhering strictly to TDD rules:
+  - **`protect` Middleware**: Verifies Bearer tokens from `Authorization` header, attaches decoded user object (`{ id, role }`), and returns `401 Unauthorized` for missing or invalid tokens.
+  - **`authorize(...roles)` Middleware**: Higher-order middleware enforcing role-based authorization (e.g. `'admin'`), returning `403 Forbidden` for non-matching roles.
+- Wrote tests first in `src/tests/middleware.test.ts` (RED phase verified).
+- Implemented middleware and verified Jest test suite passing (GREEN phase - 19/19 tests passing across 4 test suites).
+- Verified ESLint with 0 errors/warnings.
+- Updated `README.md` and `PROMPTS.md`.
+
+### Manual Changes
+- None.
+
+### Final Outcome
+- JWT Authentication & Admin Authorization middleware fully implemented with 100% test pass, clean linting, committed, and pushed to GitHub.
+
+
