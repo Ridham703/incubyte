@@ -1077,6 +1077,46 @@ Established the production-ready MERN project architecture with strict TDD workf
 ### Final Outcome
 - Vehicle purchase feature fully implemented with confirmation modal, out-of-stock disabled state, API integration, 100% test pass, clean linter, committed, and pushed to GitHub.
 
+---
+
+## Prompt 24: Admin Management Dashboard (CRUD Operations, Real-Time Statistics, Inventory Table, Testing)
+
+### Exact Prompt
+> Admin dashboard.
+> 
+> CRUD operations.
+> 
+> Statistics.
+> 
+> Inventory table.
+> 
+> Frontend tests.
+> 
+> Commit.
+> 
+> Push.
+> 
+> Stop.
+
+### AI Response Summary
+- Implemented comprehensive Admin Management Dashboard page and CRUD modals:
+  - **Statistics Analytics Cards (`src/pages/AdminDashboard.jsx`)**: Renders real-time statistics cards calculating Total Vehicles Count, Total Inventory Valuation ($), Active In-Stock count, and Out-of-Stock alert count.
+  - **Inventory Data Table (`src/pages/AdminDashboard.jsx`)**: Responsive table displaying vehicle thumbnail, make, model, year, price, stock status badge, fuel type, transmission, and action buttons.
+  - **Add & Edit Vehicle Modal (`src/components/VehicleModal.jsx`)**: Form modal with `react-hook-form` validation connecting to `POST /api/vehicles` (Add) and `PUT /api/vehicles/:id` (Edit).
+  - **Restock Modal (`src/components/RestockModal.jsx`)**: Modal dialog connecting to `POST /api/vehicles/:id/restock` to increment inventory stock.
+  - **Soft Delete Action**: Integrated soft delete confirmation calling `DELETE /api/vehicles/:id`.
+  - **Protected Admin Routing (`src/App.jsx`)**: Guarded `/admin` routes with `AdminRoute`.
+  - **Vitest & RTL Frontend Tests (`src/components/VehicleModal.test.jsx` & `src/pages/AdminDashboard.test.jsx`)**: Written unit tests verifying statistics calculation, inventory table rendering, modal form input, and API calls (21/21 frontend tests passing across 12 test suites).
+- Verified ESLint with 0 errors/warnings across frontend & backend.
+- Updated `README.md` and `PROMPTS.md`.
+
+### Manual Changes
+- None.
+
+### Final Outcome
+- Admin management dashboard fully implemented with real-time statistics, inventory CRUD table, modals, 100% test pass, clean linter, committed, and pushed to GitHub.
+
+
 
 
 

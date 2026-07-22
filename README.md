@@ -32,6 +32,9 @@ A production-ready, full-stack **Car Dealership Inventory Management System** bu
 - **Framework**: React + Vite (JSX / JS)
 - **Styling**: Tailwind CSS (Dark Glassmorphic Theme with Indigo Primary & Cyan Accent)
 - **Pages & Components**:
+  - `src/pages/AdminDashboard.jsx`: Restricted admin portal with real-time statistics analytics cards, interactive inventory CRUD table, & search
+  - `src/components/VehicleModal.jsx`: Add / Edit vehicle form modal with React Hook Form validation connecting to `POST /api/vehicles` & `PUT /api/vehicles/:id`
+  - `src/components/RestockModal.jsx`: Restock modal dialog connecting to `POST /api/vehicles/:id/restock`
   - `src/pages/Dashboard.jsx`: Inventory showroom dashboard displaying vehicles, loading skeletons, and error retry states
   - `src/components/VehicleCard.jsx`: Vehicle card displaying image, specs, formatted price tag, stock status badges, & purchase button (disabled when stock is 0)
   - `src/components/PurchaseModal.jsx`: Purchase confirmation modal dialog connecting to `POST /api/vehicles/:id/purchase`
