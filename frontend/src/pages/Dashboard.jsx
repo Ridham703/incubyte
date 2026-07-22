@@ -1,31 +1,76 @@
 import { useState, useEffect, useCallback } from 'react';
 import api from '../api/axios';
 import VehicleCard from '../components/VehicleCard';
+import SearchFilters from '../components/SearchFilters';
+import Pagination from '../components/Pagination';
 import { Car, RefreshCw, AlertCircle, Sparkles } from 'lucide-react';
+
+const INITIAL_FILTERS = {
+  search: '',
+  fuelType: '',
+  transmission: '',
+  minPrice: '',
+  maxPrice: '',
+  minYear: '',
+  maxYear: '',
+  sortBy: 'createdAt',
+  sortOrder: 'desc',
+  page: 1,
+  limit: 8,
+};
 
 export const Dashboard = () => {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [filters, setFilters] = useState(INITIAL_FILTERS);
+  const [paginationMeta, setPaginationMeta] = useState({
+    page: 1,
+    limit: 8,
+    totalItems: 0,
+    totalPages: 1,
+  });
 
   const fetchVehicles = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await api.get('/vehicles');
-      const data = res.data?.data?.vehicles || [];
-      setVehicles(data);
+      const cleanParams = {};
+      Object.entries(filters).forEach(([key, val]) => {
+        if (val !== '' && val !== null && val !== undefined) {
+          cleanParams[key] = val;
+        }
+      });
+
+      const res = await api.get('/vehicles', { params: cleanParams });
+      const data = res.data?.data;
+      setVehicles(data?.vehicles || []);
+      if (data?.pagination) {
+        setPaginationMeta(data.pagination);
+      }
     } catch (err) {
       const msg = err.response?.data?.message || 'Failed to load vehicle inventory. Please try again.';
       setError(msg);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [filters]);
 
   useEffect(() => {
     fetchVehicles();
   }, [fetchVehicles]);
+
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
+  };
+
+  const handleResetFilters = () => {
+    setFilters(INITIAL_FILTERS);
+  };
+
+  const handlePageChange = (newPage) => {
+    setFilters((prev) => ({ ...prev, page: newPage }));
+  };
 
   return (
     <div className="space-y-8 pb-12">
@@ -44,7 +89,7 @@ export const Dashboard = () => {
               Explore Available Vehicles
             </h1>
             <p className="mt-2 text-slate-400 max-w-xl text-sm leading-relaxed">
-              Browse our curated dealership collection of premium luxury, electric, and performance cars.
+              Search, filter, and discover our dealership collection of premium cars.
             </p>
           </div>
 
@@ -58,6 +103,13 @@ export const Dashboard = () => {
           </button>
         </div>
       </div>
+
+      {/* Search & Filters Controls */}
+      <SearchFilters
+        filters={filters}
+        onFilterChange={handleFilterChange}
+        onReset={handleResetFilters}
+      />
 
       {/* Loading State Skeletons */}
       {loading && (
@@ -105,20 +157,37 @@ export const Dashboard = () => {
           <div className="inline-flex p-4 bg-slate-800/80 rounded-full text-slate-400">
             <Car className="h-10 w-10" />
           </div>
-          <h3 className="text-xl font-bold text-white">No Vehicles Available</h3>
+          <h3 className="text-xl font-bold text-white">No Vehicles Found</h3>
           <p className="text-sm text-slate-400">
-            The dealership inventory is currently empty. Check back soon for new arrivals!
+            No vehicle match your current search or filter criteria. Try adjusting your parameters.
           </p>
+          <button
+            onClick={handleResetFilters}
+            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl transition-all"
+          >
+            Clear Filters
+          </button>
         </div>
       )}
 
       {/* Vehicle Grid Success State */}
       {!loading && !error && vehicles.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {vehicles.map((vehicle) => (
-            <VehicleCard key={vehicle._id} vehicle={vehicle} />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {vehicles.map((vehicle) => (
+              <VehicleCard key={vehicle._id} vehicle={vehicle} />
+            ))}
+          </div>
+
+          {/* Pagination Navigation Controls */}
+          <Pagination
+            page={paginationMeta.page}
+            totalPages={paginationMeta.totalPages}
+            totalItems={paginationMeta.totalItems}
+            limit={paginationMeta.limit}
+            onPageChange={handlePageChange}
+          />
+        </>
       )}
     </div>
   );
