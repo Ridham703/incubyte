@@ -9,8 +9,8 @@ A production-ready, full-stack **Car Dealership Inventory Management System** bu
 ### Backend
 - **Runtime**: Node.js & TypeScript
 - **Framework**: Express.js
-- **Database**: MongoDB Atlas / Mongoose ORM
-- **Testing**: Jest (`ts-jest`) & Supertest (Isolated TDD Environment)
+- **Database**: MongoDB Atlas / Mongoose ORM (`src/config/db.ts`)
+- **Testing**: Jest (`ts-jest`) & Supertest (Isolated TDD Environment with Mongoose mocks)
 - **Security & Utilities**: JWT, bcryptjs, dotenv, cors, morgan, Centralized Error Handling
 
 ### Frontend

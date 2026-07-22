@@ -356,3 +356,48 @@ Established the production-ready MERN project architecture with strict TDD workf
 ### Final Outcome
 - Complete project initialized with TypeScript Express backend, React Vite frontend, strict TDD suites, clean linting, updated documentation, committed, and pushed to GitHub.
 
+---
+
+## Prompt 7: MongoDB Atlas Database Connection Configuration (TDD)
+
+### Exact Prompt
+> Configure MongoDB Atlas.
+> 
+> Create database connection.
+> 
+> Write tests.
+> 
+> Connection success.
+> 
+> Connection failure.
+> 
+> Implement.
+> 
+> Run tests.
+> 
+> Update README.
+> 
+> Update PROMPTS.md.
+> 
+> Commit.
+> 
+> Push.
+> 
+> Stop.
+
+### AI Response Summary
+- Created MongoDB Atlas database connection module using strict TDD workflow (RED → GREEN → REFACTOR).
+- Wrote Jest unit tests in `src/tests/db.test.ts` for:
+  - Connection success scenario with valid `MONGO_URI`.
+  - Connection failure scenario handling Mongoose error output gracefully.
+  - Missing `MONGO_URI` environment variable validation.
+  - Clean database disconnection via `disconnectDB()`.
+- Verified RED phase (compilation/module failure before implementation).
+- Implemented `connectDB` and `disconnectDB` in `src/config/db.ts` and integrated with `src/server.ts` (GREEN phase - 5/5 tests passing).
+- Updated `README.md` and `PROMPTS.md`.
+
+### Manual Changes
+- None.
+
+### Final Outcome
+- MongoDB Atlas connection fully configured with 100% test coverage, committed, and pushed to GitHub.
