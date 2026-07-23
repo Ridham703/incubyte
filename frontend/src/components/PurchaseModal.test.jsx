@@ -31,7 +31,7 @@ describe('PurchaseModal Component', () => {
 
     expect(screen.getByRole('heading', { name: /confirm purchase/i })).toBeInTheDocument();
     expect(screen.getByText(/2024 Audi RS6 Avant/i)).toBeInTheDocument();
-    expect(screen.getByText(/\$125,000/i)).toBeInTheDocument();
+    expect(screen.getByText(/₹1,25,000/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /confirm/i })).toBeInTheDocument();
   });
 

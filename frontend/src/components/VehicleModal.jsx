@@ -125,9 +125,25 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
       if (isEditing) {
         res = await api.put(`/vehicles/${vehicle._id}`, payload);
         toast.success(`Updated ${payload.make} ${payload.model} successfully!`);
+        window.dispatchEvent(new CustomEvent('autosphere-notification', {
+          detail: {
+            id: Date.now().toString(),
+            text: `Updated specifications for ${payload.make} ${payload.model}`,
+            time: 'Just now',
+            type: 'edit'
+          }
+        }));
       } else {
         res = await api.post('/vehicles', payload);
         toast.success(`Added ${payload.make} ${payload.model} to inventory!`);
+        window.dispatchEvent(new CustomEvent('autosphere-notification', {
+          detail: {
+            id: Date.now().toString(),
+            text: `Added new vehicle ${payload.make} ${payload.model} to inventory`,
+            time: 'Just now',
+            type: 'add'
+          }
+        }));
       }
 
       const savedVehicle = res.data?.data?.vehicle || payload;
@@ -141,38 +157,45 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
     }
   };
 
+  const onError = (errors) => {
+    const firstError = Object.values(errors)[0];
+    if (firstError) {
+      toast.error(firstError.message || 'Please fill in all required fields.');
+    }
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="vehicle-modal-title">
-      <div className="relative w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 my-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md animate-fadeIn overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="vehicle-modal-title">
+      <div className="relative w-full max-w-2xl bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-2xl space-y-6 my-8 text-slate-800 transition-all duration-200">
         {/* Close Button */}
         <button
           onClick={onClose}
           disabled={loading}
           aria-label="Close vehicle form dialog"
-          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-200 rounded-xl hover:bg-slate-800/80 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-700 rounded-xl hover:bg-slate-50 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <X className="h-5 w-5" />
         </button>
 
         {/* Modal Header */}
         <div className="flex items-center space-x-3">
-          <div className="p-3 bg-indigo-500/10 rounded-2xl border border-indigo-500/20 text-indigo-400">
-            {isEditing ? <Edit3 className="h-6 w-6" /> : <PlusCircle className="h-6 w-6" />}
+          <div className="p-3 bg-blue-50 rounded-2xl border border-blue-100 text-blue-600 shadow-sm">
+            {isEditing ? <Edit3 className="h-5 w-5" /> : <PlusCircle className="h-5 w-5" />}
           </div>
           <div>
-            <h3 id="vehicle-modal-title" className="text-2xl font-extrabold text-white">
+            <h3 id="vehicle-modal-title" className="text-2xl font-black text-slate-950 tracking-tight">
               {isEditing ? 'Vehicle Edit Form' : 'Vehicle Add Form'}
             </h3>
-            <p className="text-xs text-slate-400">Fill in the specification details for dealership inventory</p>
+            <p className="text-xs text-slate-500 font-medium">Fill in the specification details for dealership inventory</p>
           </div>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
+        <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-4" noValidate>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Make */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
                 Make *
               </label>
               <input
@@ -185,16 +208,16 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
                   minLength: { value: 2, message: 'Make must be at least 2 characters' },
                 })}
                 placeholder="e.g. BMW, Tesla, Audi"
-                className={`w-full py-2.5 px-3.5 bg-slate-800/80 border ${
-                  errors.make ? 'border-red-500/80' : 'border-slate-700/80'
-                } rounded-xl text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+                className={`w-full py-2.5 px-3.5 premium-input ${
+                  errors.make ? 'border-rose-500/80 focus:ring-rose-500/10' : ''
+                } text-slate-900 text-sm focus:outline-none`}
               />
-              {errors.make && <p id="make-error" className="mt-1 text-xs text-red-400 font-medium">{errors.make.message}</p>}
+              {errors.make && <p id="make-error" className="mt-1 text-xs text-rose-500 font-bold">{errors.make.message}</p>}
             </div>
 
             {/* Model */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
                 Model *
               </label>
               <input
@@ -207,16 +230,16 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
                   minLength: { value: 2, message: 'Model must be at least 2 characters' },
                 })}
                 placeholder="e.g. M3, Model 3, RS5"
-                className={`w-full py-2.5 px-3.5 bg-slate-800/80 border ${
-                  errors.model ? 'border-red-500/80' : 'border-slate-700/80'
-                } rounded-xl text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+                className={`w-full py-2.5 px-3.5 premium-input ${
+                  errors.model ? 'border-rose-500/80 focus:ring-rose-500/10' : ''
+                } text-slate-900 text-sm focus:outline-none`}
               />
-              {errors.model && <p id="model-error" className="mt-1 text-xs text-red-400 font-medium">{errors.model.message}</p>}
+              {errors.model && <p id="model-error" className="mt-1 text-xs text-rose-500 font-bold">{errors.model.message}</p>}
             </div>
 
             {/* Year */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
                 Year *
               </label>
               <input
@@ -226,16 +249,16 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
                   min: { value: 1900, message: 'Year must be >= 1900' },
                   max: { value: new Date().getFullYear() + 2, message: 'Invalid manufacturing year' },
                 })}
-                className={`w-full py-2.5 px-3.5 bg-slate-800/80 border ${
-                  errors.year ? 'border-red-500/80' : 'border-slate-700/80'
-                } rounded-xl text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50`}
+                className={`w-full py-2.5 px-3.5 premium-input ${
+                  errors.year ? 'border-rose-500/80 focus:ring-rose-500/10' : ''
+                } text-slate-900 text-sm focus:outline-none`}
               />
-              {errors.year && <p className="mt-1 text-xs text-red-400 font-medium">{errors.year.message}</p>}
+              {errors.year && <p className="mt-1 text-xs text-rose-500 font-bold">{errors.year.message}</p>}
             </div>
 
             {/* Price */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
                 Price ($) *
               </label>
               <input
@@ -245,16 +268,16 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
                   min: { value: 0, message: 'Price cannot be negative' },
                 })}
                 placeholder="e.g. 65000"
-                className={`w-full py-2.5 px-3.5 bg-slate-800/80 border ${
-                  errors.price ? 'border-red-500/80' : 'border-slate-700/80'
-                } rounded-xl text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50`}
+                className={`w-full py-2.5 px-3.5 premium-input ${
+                  errors.price ? 'border-rose-500/80 focus:ring-rose-500/10' : ''
+                } text-slate-900 text-sm focus:outline-none`}
               />
-              {errors.price && <p className="mt-1 text-xs text-red-400 font-medium">{errors.price.message}</p>}
+              {errors.price && <p className="mt-1 text-xs text-rose-500 font-bold">{errors.price.message}</p>}
             </div>
 
             {/* Mileage */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
                 Mileage (mi) *
               </label>
               <input
@@ -264,16 +287,16 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
                   min: { value: 0, message: 'Mileage cannot be negative' },
                 })}
                 placeholder="e.g. 12000"
-                className={`w-full py-2.5 px-3.5 bg-slate-800/80 border ${
-                  errors.mileage ? 'border-red-500/80' : 'border-slate-700/80'
-                } rounded-xl text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50`}
+                className={`w-full py-2.5 px-3.5 premium-input ${
+                  errors.mileage ? 'border-rose-500/80 focus:ring-rose-500/10' : ''
+                } text-slate-900 text-sm focus:outline-none`}
               />
-              {errors.mileage && <p className="mt-1 text-xs text-red-400 font-medium">{errors.mileage.message}</p>}
+              {errors.mileage && <p className="mt-1 text-xs text-rose-500 font-bold">{errors.mileage.message}</p>}
             </div>
 
             {/* Stock */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
                 Initial Stock Units *
               </label>
               <input
@@ -282,24 +305,24 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
                   required: 'Stock is required',
                   min: { value: 0, message: 'Stock cannot be negative' },
                 })}
-                className={`w-full py-2.5 px-3.5 bg-slate-800/80 border ${
-                  errors.stock ? 'border-red-500/80' : 'border-slate-700/80'
-                } rounded-xl text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50`}
+                className={`w-full py-2.5 px-3.5 premium-input ${
+                  errors.stock ? 'border-rose-500/80 focus:ring-rose-500/10' : ''
+                } text-slate-900 text-sm focus:outline-none`}
               />
-              {errors.stock && <p className="mt-1 text-xs text-red-400 font-medium">{errors.stock.message}</p>}
+              {errors.stock && <p className="mt-1 text-xs text-rose-500 font-bold">{errors.stock.message}</p>}
             </div>
 
             {/* Fuel Type */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
                 Fuel Type *
               </label>
               <select
                 {...register('fuelType', { required: 'Fuel type is required' })}
-                className="w-full py-2.5 px-3.5 bg-slate-800/80 border border-slate-700/80 rounded-xl text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                className="w-full py-2.5 px-3.5 premium-input rounded-xl text-slate-800 text-sm focus:outline-none"
               >
                 {FUEL_TYPES.map((fuel) => (
-                  <option key={fuel} value={fuel}>
+                  <option key={fuel} value={fuel} className="bg-white text-slate-800">
                     {fuel}
                   </option>
                 ))}
@@ -308,15 +331,15 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
 
             {/* Transmission */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
                 Transmission *
               </label>
               <select
                 {...register('transmission', { required: 'Transmission is required' })}
-                className="w-full py-2.5 px-3.5 bg-slate-800/80 border border-slate-700/80 rounded-xl text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                className="w-full py-2.5 px-3.5 premium-input rounded-xl text-slate-800 text-sm focus:outline-none"
               >
                 {TRANSMISSION_TYPES.map((trans) => (
-                  <option key={trans} value={trans}>
+                  <option key={trans} value={trans} className="bg-white text-slate-800">
                     {trans}
                   </option>
                 ))}
@@ -327,15 +350,15 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
           {/* Image Upload Field */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider">
                 Vehicle Image Field
               </label>
-              <div className="flex items-center space-x-1 bg-slate-800 p-1 rounded-xl border border-slate-700">
+              <div className="flex items-center space-x-1 bg-slate-50 p-1 rounded-xl border border-slate-200">
                 <button
                   type="button"
                   onClick={() => setImageMode('url')}
-                  className={`flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
-                    imageMode === 'url' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-slate-200'
+                  className={`flex items-center space-x-1 px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                    imageMode === 'url' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-500 hover:text-slate-850'
                   }`}
                 >
                   <LinkIcon className="h-3 w-3" />
@@ -344,8 +367,8 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
                 <button
                   type="button"
                   onClick={() => setImageMode('file')}
-                  className={`flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
-                    imageMode === 'file' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-slate-200'
+                  className={`flex items-center space-x-1 px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                    imageMode === 'file' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-500 hover:text-slate-850'
                   }`}
                 >
                   <Upload className="h-3 w-3" />
@@ -363,11 +386,11 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
                   type="url"
                   {...register('image')}
                   placeholder="https://images.unsplash.com/photo-..."
-                  className="w-full pl-10 pr-3.5 py-2.5 bg-slate-800/80 border border-slate-700/80 rounded-xl text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                  className="w-full pl-10 pr-3.5 py-2.5 premium-input rounded-xl text-slate-900 text-sm focus:outline-none"
                 />
               </div>
             ) : (
-              <div className="border-2 border-dashed border-slate-700 hover:border-indigo-500/60 rounded-2xl p-4 text-center bg-slate-800/40 transition-colors">
+              <div className="border-2 border-dashed border-slate-200 hover:border-blue-400 rounded-2xl p-4 text-center bg-slate-50 transition-colors">
                 <input
                   type="file"
                   accept="image/*"
@@ -379,25 +402,25 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
                   htmlFor="vehicle-image-upload"
                   className="cursor-pointer flex flex-col items-center justify-center space-y-2"
                 >
-                  <div className="p-3 bg-indigo-500/10 rounded-full text-indigo-400">
+                  <div className="p-3 bg-blue-50 rounded-full text-blue-600">
                     <Upload className="h-6 w-6" />
                   </div>
-                  <div className="text-xs font-semibold text-slate-200">
-                    Click to upload vehicle photo <span className="text-indigo-400">(Max 5MB)</span>
+                  <div className="text-xs font-bold text-slate-700">
+                    Click to upload vehicle photo <span className="text-blue-600">(Max 5MB)</span>
                   </div>
-                  <div className="text-[11px] text-slate-400">Supports PNG, JPG, WEBP formats</div>
+                  <div className="text-[11px] text-slate-400 font-medium">Supports PNG, JPG, WEBP formats</div>
                 </label>
               </div>
             )}
 
             {/* Live Image Preview */}
             {imagePreview && (
-              <div className="relative mt-3 rounded-2xl overflow-hidden border border-slate-700 bg-slate-950 aspect-[16/7]">
+              <div className="relative mt-3 rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 aspect-[16/7] shadow-sm">
                 <img src={imagePreview} alt="Live Vehicle Preview" className="w-full h-full object-cover" />
                 <button
                   type="button"
                   onClick={clearImage}
-                  className="absolute top-2 right-2 p-1.5 bg-red-600/90 text-white rounded-xl hover:bg-red-500 transition-all shadow-lg"
+                  className="absolute top-2 right-2 p-2 bg-rose-600/90 text-white rounded-xl hover:bg-rose-500 transition-all shadow-md border border-white/10"
                   title="Remove Image"
                 >
                   <Trash2 className="h-4 w-4" />
@@ -408,31 +431,31 @@ export const VehicleModal = ({ vehicle, isOpen, onClose, onSuccess }) => {
 
           {/* Description */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
               Description (Optional)
             </label>
             <textarea
               rows={2}
               {...register('description')}
               placeholder="Provide key features or vehicle details..."
-              className="w-full py-2.5 px-3.5 bg-slate-800/80 border border-slate-700/80 rounded-xl text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 resize-none"
+              className="w-full py-2.5 px-3.5 premium-input rounded-xl text-slate-900 text-sm focus:outline-none resize-none"
             />
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-3 pt-4 border-t border-slate-800/80">
+          <div className="flex gap-3 pt-4 border-t border-slate-100">
             <button
               type="button"
               onClick={onClose}
               disabled={loading}
-              className="w-1/2 py-3 px-4 rounded-xl border border-slate-700 text-sm font-semibold text-slate-300 hover:bg-slate-800 hover:text-white transition-all disabled:opacity-50 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-1/2 py-3 px-4 rounded-xl border border-slate-200 text-sm font-bold text-slate-600 bg-slate-50 hover:bg-slate-100 transition-all disabled:opacity-50 min-h-[44px] focus:outline-none"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="w-1/2 flex items-center justify-center space-x-2 py-3 px-4 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 shadow-lg shadow-indigo-600/30 transition-all disabled:opacity-50 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              className="w-1/2 flex items-center justify-center space-x-2 py-3 px-4 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 border border-white/10 shadow-sm transition-all disabled:opacity-50 min-h-[44px] focus:outline-none active:scale-[0.98]"
             >
               {loading ? (
                 <span className="flex items-center space-x-2">

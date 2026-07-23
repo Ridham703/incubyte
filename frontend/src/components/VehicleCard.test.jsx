@@ -31,7 +31,7 @@ describe('VehicleCard Component', () => {
     expect(screen.getByText('Porsche')).toBeInTheDocument();
     expect(screen.getByText('911 GT3')).toBeInTheDocument();
     expect(screen.getByText('2024')).toBeInTheDocument();
-    expect(screen.getByText('$185,000')).toBeInTheDocument();
+    expect(screen.getByText(/₹1,85,000/i)).toBeInTheDocument();
     expect(screen.getByText('1,500 mi')).toBeInTheDocument();
     expect(screen.getByText('Gasoline')).toBeInTheDocument();
     expect(screen.getByText(/Low Stock \(2\)/i)).toBeInTheDocument();

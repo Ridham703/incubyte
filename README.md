@@ -1,47 +1,127 @@
-# 🚗 Car Dealership Inventory Management System
+# 🚗 AutoSphere — Car Dealership Inventory Management System
 
-A production-ready, full-stack **Car Dealership Inventory Management System** featuring a **TypeScript Node.js/Express REST API** backend and a modern **React (Vite) + Tailwind CSS Glassmorphic** frontend. Built adhering strictly to **Test-Driven Development (TDD)**, **Repository-Service-Controller Architecture**, and **WCAG Accessibility Standards**.
+A full-stack **Car Dealership Inventory Management System** featuring a **Node.js/Express REST API** backend and a modern **React (Vite) + Tailwind CSS** frontend. Built with a **Repository-Service-Controller Architecture**, comprehensive **test coverage**, and **role-based access control**.
 
 ---
 
 ## 📑 Table of Contents
 
-1. [Project Overview](#-project-overview)
-2. [Architecture](#-architecture)
-3. [Tech Stack](#-tech-stack)
-4. [Installation](#-installation)
-5. [Running Locally](#-running-locally)
-6. [Environment Variables](#-environment-variables)
-7. [API Documentation](#-api-documentation)
-8. [Folder Structure](#-folder-structure)
-9. [Testing](#-testing)
-10. [Deployment](#-deployment)
-11. [Screenshots & UI Showcase](#-screenshots--ui-showcase)
-12. [AI Usage](#-ai-usage)
-13. [Contribution](#-contribution)
-14. [Troubleshooting](#-troubleshooting)
-15. [License](#-license)
+- [Project Overview](#-project-overview)
+- [Features](#-features)
+- [Technology Stack](#-technology-stack)
+- [Project Architecture](#-project-architecture)
+- [Installation Guide](#-installation-guide)
+- [Environment Variables](#-environment-variables)
+- [Database Seeding](#-database-seeding)
+- [API Documentation](#-api-documentation)
+- [Folder Structure](#-folder-structure)
+- [Testing](#-testing)
+- [Deployment](#-deployment)
+- [Screenshots](#-screenshots)
+- [Future Improvements](#-future-improvements)
+- [Author](#-author)
+- [License](#-license)
 
 ---
 
 ## 🚘 Project Overview
 
-AutoSphere is a dealership platform designed to handle car inventory management, sales tracking, and administrative operations.
+**AutoSphere** is a dealership inventory platform that enables car dealerships to manage their vehicle catalog, process customer purchases, and handle administrative operations — all through a modern, responsive web interface.
 
-### Key Capabilities
-- **Live Showroom Catalog**: Real-time vehicle cards featuring vehicle image thumbnails, specifications (Make, Model, Year, Mileage, Fuel Type, Transmission), dynamic pricing, and live stock badges (`In Stock`, `Low Stock`, `Out of Stock`).
-- **Advanced Multi-Attribute Search & Filter**: Instant search across Make/Model, fuel type selector, transmission selector, price range sliders, manufacturing year filters, and sorting (price, year, mileage, recency).
-- **Vehicle Purchase Flow**: Authenticated customer vehicle purchasing with quantity validation, automated stock decrementing, out-of-stock disabling, and toast notifications.
-- **Admin Management Portal**: Role-Based Access Control (`admin`) guarding real-time statistics cards (Total Inventory, Valuation, In-Stock, Out-of-Stock count), interactive CRUD table, and search.
-- **Vehicle Add & Edit Forms**: Modal supporting creation and updates with dual image handling (**Image URL** or **File Dropzone Upload** with FileReader Base64 preview) and `react-hook-form` validation.
-- **Inventory Restock Endpoint**: Admin stock replenishment dialog with validation.
-- **WCAG Accessibility (a11y)**: Full ARIA attribute compliance (`aria-label`, `aria-expanded`, `role="dialog"`, `aria-modal`, `aria-live`, `aria-invalid`, `aria-describedby`) and keyboard focus rings (`focus:ring-2 focus:ring-indigo-500`).
+### The Problem It Solves
+
+Car dealerships need a centralized system to track vehicle inventory, manage stock levels, process purchases, and provide different levels of access to staff and customers. AutoSphere provides a role-based platform where:
+
+- **Customers** can browse the showroom catalog, search and filter vehicles, and purchase available stock.
+- **Administrators** can manage the entire inventory — add new vehicles, edit details, restock, soft-delete listings, and monitor real-time dealership statistics.
 
 ---
 
-## 🏗️ Architecture
+## ✨ Features
 
-The backend implements a decoupled **Repository-Service-Controller Pattern**:
+### Authentication & Authorization
+- User registration and login with JWT-based authentication
+- Password hashing with bcrypt (salt factor 10)
+- Role-based access control (`user` and `admin` roles)
+- Protected and admin-only route guards on both frontend and backend
+- Automatic token injection via Axios interceptors
+
+### Vehicle Inventory Management
+- Full CRUD operations for vehicle listings (Create, Read, Update, Soft Delete)
+- Vehicle details: Make, Model, Year, Price, Mileage, Fuel Type, Transmission, Stock, Image, Description
+- Soft delete pattern — deleted vehicles are flagged, not permanently removed
+- Dynamic stock badges: `In Stock`, `Low Stock`, `Out of Stock`
+
+### Search & Filter
+- Keyword search across Make and Model fields
+- Filter by Fuel Type, Transmission, Price Range, and Year Range
+- Sort by Price, Year, Mileage, or Date Added (ascending/descending)
+- Server-side pagination with configurable page size
+
+### Purchase & Restock Workflow
+- Authenticated users can purchase vehicles (stock decremented automatically)
+- Quantity validation and insufficient stock handling
+- Admin-only restock endpoint to replenish vehicle inventory
+- Toast notifications for purchase and restock actions
+
+### Admin Dashboard
+- Real-time statistics cards: Total Vehicles, Total Valuation, In-Stock Count, Out-of-Stock Count
+- Interactive inventory management table with inline actions
+- Vehicle Add/Edit modal with image URL support and form validation via `react-hook-form`
+- Role-based UI — admin users see the Admin Dashboard; regular users see the Inventory catalog
+
+### Responsive UI
+- Fully responsive design using Tailwind CSS
+- Fixed navigation bar with mobile hamburger menu drawer
+- Notification center with action-based alerts (purchase, restock, delete events)
+- Premium ambient background with subtle grid textures
+- Footer with quick links and dealership contact information
+
+### Testing
+- 59 backend unit tests across 12 test suites (Jest + Supertest)
+- 23 frontend unit tests across 13 test suites (Vitest + React Testing Library)
+- Repository mocking for isolated unit tests without database connections
+
+---
+
+## 🛠️ Technology Stack
+
+### Frontend
+
+| Technology | Purpose |
+| :--- | :--- |
+| React 18 | Component-based UI framework |
+| JavaScript (ES Modules) | Application language |
+| Vite | Build tool and development server |
+| Tailwind CSS | Utility-first CSS framework |
+| Axios | HTTP client with interceptors |
+| React Router DOM v6 | Client-side routing with route guards |
+| React Hook Form | Form state management and validation |
+| React Hot Toast | Toast notification system |
+| Lucide React | Icon library |
+| Vitest | Unit test runner |
+| React Testing Library | Component testing utilities |
+
+### Backend
+
+| Technology | Purpose |
+| :--- | :--- |
+| Node.js | JavaScript runtime |
+| Express.js | Web application framework |
+| JavaScript (CommonJS) | Application language |
+| MongoDB Atlas | Cloud-hosted NoSQL database |
+| Mongoose | MongoDB ODM (Object Document Mapper) |
+| JSON Web Token (JWT) | Stateless authentication |
+| bcryptjs | Password hashing |
+| Morgan | HTTP request logger |
+| Jest | Unit test framework |
+| Supertest | HTTP endpoint testing |
+
+---
+
+## 🏗️ Project Architecture
+
+The backend implements a decoupled **Repository-Service-Controller** pattern:
 
 ```
 Client (React + Vite)
@@ -50,149 +130,192 @@ Client (React + Vite)
 HTTP / REST API (JWT Bearer Token)
        │
        ▼
-Routes Layer (`src/routes/*.routes.ts`)
+Routes Layer (src/routes/*.routes.js)
        │
        ▼
-Controller Layer (`src/controllers/*.controller.ts`) ── Request Validation & HTTP Mapping
+Controller Layer (src/controllers/*.controller.js) ── Request Validation & HTTP Mapping
        │
        ▼
-Service Layer (`src/services/*.service.ts`) ── Core Business Logic & Authorization Checks
+Service Layer (src/services/*.service.js) ── Core Business Logic & Authorization
        │
        ▼
-Repository Layer (`src/repositories/*.repository.ts`) ── Database Abstraction & Queries
+Repository Layer (src/repositories/*.repository.js) ── Database Abstraction & Queries
        │
        ▼
-Database Layer (MongoDB Atlas / Mongoose ORM)
+Database Layer (MongoDB Atlas / Mongoose ODM)
 ```
 
-### Architectural Guarantees
-- **Separation of Concerns**: Controllers process HTTP request/response DTOs; Services contain pure business domain logic; Repositories isolate database queries.
-- **Repository Pattern & Mockability**: Enables isolated unit testing without requiring active database connections during test runs.
-- **Soft Delete Pattern**: Deleted vehicles retain data integrity via `isDeleted: true` flags, excluded automatically from active catalog queries (`{ isDeleted: { $ne: true } }`).
-- **Security & Authorization**: Passwords hashed with `bcryptjs` (salt factor 10); Stateless authentication powered by `jsonwebtoken` (JWT); Role-Based Access Control (`user` vs `admin`).
+### Authentication Flow
+
+```
+1. User submits credentials (POST /api/auth/login)
+2. Server validates credentials against hashed password in MongoDB
+3. Server generates a signed JWT token and returns it to the client
+4. Client stores the token in localStorage
+5. Axios interceptor attaches "Authorization: Bearer <token>" to every request
+6. Backend middleware (protect) verifies the token on protected routes
+7. Backend middleware (authorize) checks user role for admin-only routes
+```
+
+### Key Design Decisions
+
+- **Separation of Concerns**: Controllers handle HTTP; Services contain business logic; Repositories isolate database queries
+- **Repository Pattern**: Enables isolated unit testing by mocking the data layer
+- **Soft Delete Pattern**: Deleted vehicles retain data integrity via `isDeleted: true` flags
+- **Vite Proxy**: Frontend dev server proxies `/api` requests to the backend, avoiding CORS issues in development
 
 ---
 
-## 🛠️ Tech Stack
-
-### Backend
-- **Language & Runtime**: TypeScript, Node.js
-- **Framework**: Express.js
-- **Database & ORM**: MongoDB Atlas, Mongoose ORM
-- **Authentication**: JSON Web Token (`jsonwebtoken`), Password Hashing (`bcryptjs`)
-- **Testing**: Jest (`ts-jest`), Supertest
-- **Code Quality**: ESLint, TypeScript Strict Mode
-
-### Frontend
-- **Framework & Build Tool**: React 18, Vite
-- **Styling & UI**: Tailwind CSS (Dark Glassmorphic Theme), Lucide React Icons
-- **Form Management**: React Hook Form
-- **State & HTTP**: React Context API, Axios (with Interceptors)
-- **Routing**: React Router DOM (v6) with Protected & Admin Route Guards
-- **Notifications**: React Hot Toast
-- **Testing**: Vitest, React Testing Library (RTL)
-
----
-
-## 📥 Installation
+## 📥 Installation Guide
 
 ### Prerequisites
-- Node.js (v18.0.0 or higher)
-- npm (v9.0.0 or higher)
-- MongoDB Atlas cluster URI or local MongoDB instance
 
-### Step-by-Step Setup
+- **Node.js** v18.0.0 or higher
+- **npm** v9.0.0 or higher
+- **MongoDB Atlas** cluster URI (or a local MongoDB instance)
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/Ridham703/incubyte.git
-   cd incubyte
-   ```
+### Step 1 — Clone the Repository
 
-2. **Install Backend Dependencies**:
-   ```bash
-   cd backend
-   npm install
-   ```
+```bash
+git clone https://github.com/Ridham703/incubyte.git
+cd incubyte
+```
 
-3. **Install Frontend Dependencies**:
-   ```bash
-   cd ../frontend
-   npm install
-   ```
+### Step 2 — Install Backend Dependencies
 
----
+```bash
+cd backend
+npm install
+```
 
-## 🏃 Running Locally
+### Step 3 — Install Frontend Dependencies
 
-### 1. Start the Backend Server
+```bash
+cd ../frontend
+npm install
+```
+
+### Step 4 — Configure Environment Variables
+
+```bash
+cd ../backend
+cp .env.example .env
+```
+
+Edit the `.env` file and set your MongoDB connection string and JWT secret. See [Environment Variables](#-environment-variables) below.
+
+### Step 5 — Seed the Database (Optional)
+
+```bash
+cd backend
+npm run seed
+```
+
+This creates default user accounts and populates the database with 8 sample vehicles.
+
+### Step 6 — Start the Backend Server
+
 ```bash
 cd backend
 npm run dev
 ```
-The Express TypeScript API server starts at `http://localhost:5000`. You can verify system health by calling `http://localhost:5000/api/health`.
 
-### 2. Start the Frontend Client
+The Express API server starts at **http://localhost:5000**.
+
+### Step 7 — Start the Frontend Client
+
 In a separate terminal:
+
 ```bash
 cd frontend
 npm run dev
 ```
-The Vite development server starts at `http://localhost:3000`.
+
+The Vite development server starts at **http://localhost:3000**.
 
 ---
 
 ## 🔒 Environment Variables
 
-Copy the `.env.example` file in the `backend` directory to `.env`:
+Create a `.env` file in the `backend/` directory using the provided template:
 
 ```bash
 cp backend/.env.example backend/.env
 ```
 
-### Backend `.env` Configuration Options
-```env
-# Server Port Configuration
-PORT=5000
+### Required Variables
 
-# Node Environment
-NODE_ENV=development
+| Variable | Description | Example |
+| :--- | :--- | :--- |
+| `PORT` | Port the backend server listens on | `5000` |
+| `NODE_ENV` | Application environment | `development` |
+| `MONGO_URI` | MongoDB Atlas connection string | `mongodb+srv://<user>:<pass>@cluster.mongodb.net/dealership` |
+| `JWT_SECRET` | Secret key for signing JWT tokens | `your_super_secret_jwt_key_change_in_production` |
+| `JWT_EXPIRES_IN` | JWT token expiration duration | `1d` |
 
-# MongoDB Connection String
-MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/dealership?retryWrites=true&w=majority
+> ⚠️ **Security Note**: Never commit your `.env` file to version control. The `.gitignore` already excludes it.
 
-# JWT Authentication Secret & Expiry
-JWT_SECRET=your_super_secret_jwt_key_here
-JWT_EXPIRES_IN=7d
+---
 
-# CORS Allowed Origin
-CORS_ORIGIN=http://localhost:3000
+## 🌱 Database Seeding
+
+Seed the database with sample data:
+
+```bash
+cd backend
+npm run seed
 ```
+
+This will create:
+
+| Account | Email | Password | Role |
+| :--- | :--- | :--- | :--- |
+| Admin 1 | `ridhammangroliya4080@gmail.com` | `Ridham@123` | `admin` |
+| Admin 2 | `ridhammangroliya@gmail.com` | `Ridham@123` | `admin` |
+
+Plus **8 sample vehicles** across various makes and models (Tesla, Porsche, BMW, Mercedes-Benz, etc.).
 
 ---
 
 ## 📑 API Documentation
 
 ### Public Endpoints
+
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
-| `GET` | `/api/health` | Health check endpoint returning server status |
-| `POST` | `/api/auth/register` | Register a new user (`name`, `email`, `password`, `role`) |
-| `POST` | `/api/auth/login` | Authenticate user & return JWT Bearer token |
-| `GET` | `/api/vehicles` | List vehicles with search, filters (`fuelType`, `minPrice`), & pagination |
-| `GET` | `/api/vehicles/search` | Multi-attribute search query endpoint |
-| `GET` | `/api/vehicles/:id` | Fetch single vehicle details by ID |
+| `GET` | `/api/health` | Health check — returns server status |
+| `POST` | `/api/auth/register` | Register a new user account |
+| `POST` | `/api/auth/login` | Authenticate and receive a JWT token |
+| `GET` | `/api/vehicles` | List vehicles with pagination, sorting, and filters |
+| `GET` | `/api/vehicles/search` | Search vehicles by make, model, price, year, fuel, transmission |
 
 ### Protected Endpoints (Requires `Authorization: Bearer <token>`)
-| Method | Endpoint | Role Required | Description |
+
+| Method | Endpoint | Role | Description |
 | :--- | :--- | :--- | :--- |
-| `GET` | `/api/auth/me` | User / Admin | Get authenticated user profile |
-| `POST` | `/api/vehicles/:id/purchase` | User / Admin | Purchase 1 unit of a vehicle and decrement stock |
-| `POST` | `/api/vehicles` | Admin | Add new vehicle to dealership inventory |
-| `PUT` | `/api/vehicles/:id` | Admin | Full update of existing vehicle details |
+| `GET` | `/api/auth/me` | Any | Get authenticated user profile |
+| `POST` | `/api/vehicles/:id/purchase` | Any | Purchase a vehicle (decrements stock) |
+| `POST` | `/api/vehicles` | Admin | Add a new vehicle to inventory |
+| `PUT` | `/api/vehicles/:id` | Admin | Full update of vehicle details |
 | `PATCH` | `/api/vehicles/:id` | Admin | Partial update of vehicle details |
-| `DELETE` | `/api/vehicles/:id` | Admin | Soft delete vehicle from active inventory |
+| `DELETE` | `/api/vehicles/:id` | Admin | Soft delete a vehicle from active inventory |
 | `POST` | `/api/vehicles/:id/restock` | Admin | Restock vehicle inventory by quantity |
+
+### Query Parameters for `GET /api/vehicles`
+
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `search` | string | Keyword search across make and model |
+| `fuelType` | string | Filter by fuel type (e.g., `Gasoline`, `Electric`, `Hybrid`) |
+| `transmission` | string | Filter by transmission (e.g., `Automatic`, `Manual`) |
+| `minPrice` | number | Minimum price filter |
+| `maxPrice` | number | Maximum price filter |
+| `minYear` | number | Minimum year filter |
+| `maxYear` | number | Maximum year filter |
+| `sortBy` | string | Sort field (`price`, `year`, `mileage`, `createdAt`) |
+| `sortOrder` | string | Sort direction (`asc` or `desc`) |
+| `page` | number | Page number (default: `1`) |
+| `limit` | number | Results per page (default: `10`) |
 
 ---
 
@@ -200,46 +323,83 @@ CORS_ORIGIN=http://localhost:3000
 
 ```
 incubyte/
-├── PROMPTS.md                       # Comprehensive prompt execution & change logs
-├── README.md                        # Project documentation & reference manual
-├── .gitignore                       # System-wide git ignore rules
-├── .env.example                     # Root environment variable template
-├── backend/                         # Express + TypeScript API (TDD Architecture)
+├── README.md
+├── PROMPTS.md
+├── .gitignore
+├── .env.example
+│
+├── backend/
 │   ├── src/
-│   │   ├── config/                  # DB connection & environment configuration
-│   │   ├── controllers/             # HTTP Controllers (Auth, Vehicle, Health)
-│   │   ├── middleware/              # JWT Auth, Admin Authorization, Error Handlers
-│   │   ├── models/                  # Mongoose Schemas & TypeScript interfaces
-│   │   ├── repositories/            # Data Access Layer (User, Vehicle repositories)
-│   │   ├── routes/                  # Express route routers
-│   │   ├── services/                # Business Domain Services
-│   │   ├── utils/                   # Helper functions & custom AppError
-│   │   ├── tests/                   # TDD Jest test suite (`*.test.ts`)
-│   │   ├── app.ts                   # Express Application setup & middleware binding
-│   │   └── server.ts                # HTTP Server entrypoint
-│   ├── tsconfig.json                # TypeScript compiler configuration
-│   ├── jest.config.js               # Jest TDD test runner configuration
+│   │   ├── config/
+│   │   │   └── db.js                  # MongoDB connection & disconnection
+│   │   ├── controllers/
+│   │   │   ├── auth.controller.js     # Register, Login, GetMe handlers
+│   │   │   ├── health.controller.js   # Health check handler
+│   │   │   └── vehicle.controller.js  # Vehicle CRUD, Purchase, Restock handlers
+│   │   ├── middleware/
+│   │   │   ├── auth.middleware.js     # JWT verification & role authorization
+│   │   │   └── errorHandler.js        # Global error handling middleware
+│   │   ├── models/
+│   │   │   ├── user.model.js          # Mongoose User schema
+│   │   │   └── vehicle.model.js       # Mongoose Vehicle schema
+│   │   ├── repositories/
+│   │   │   ├── user.repository.js     # User data access layer
+│   │   │   └── vehicle.repository.js  # Vehicle data access layer
+│   │   ├── routes/
+│   │   │   ├── auth.routes.js         # Authentication routes
+│   │   │   ├── health.routes.js       # Health check route
+│   │   │   └── vehicle.routes.js      # Vehicle API routes
+│   │   ├── scripts/
+│   │   │   └── seed.js                # Database seeding script
+│   │   ├── services/
+│   │   │   ├── auth.service.js        # Authentication business logic
+│   │   │   └── vehicle.service.js     # Vehicle business logic
+│   │   ├── tests/                     # Jest test suites (12 files, 59 tests)
+│   │   ├── app.js                     # Express app setup & middleware
+│   │   └── server.js                  # HTTP server entrypoint
+│   ├── .env.example
+│   ├── .eslintrc.json
+│   ├── .prettierrc
+│   ├── jest.config.js
 │   └── package.json
-└── frontend/                        # React + Vite Glassmorphic Client
+│
+└── frontend/
     ├── src/
-    │   ├── api/                     # Axios client instance with request/response interceptors
-    │   ├── components/              # Modular Glassmorphic UI Components
-    │   │   ├── Navbar.jsx           # Accessible navigation bar with mobile drawer
-    │   │   ├── VehicleCard.jsx      # Showroom vehicle display card
-    │   │   ├── PurchaseModal.jsx    # Purchase confirmation modal
-    │   │   ├── VehicleModal.jsx     # Add/Edit vehicle form modal with File Upload
-    │   │   ├── RestockModal.jsx     # Inventory restock dialog modal
-    │   │   ├── SearchFilters.jsx    # Multi-attribute filter & search controls
-    │   │   ├── Pagination.jsx       # Accessible page navigation controls
-    │   │   ├── ProtectedRoute.jsx   # User authentication route guard
-    │   │   └── AdminRoute.jsx       # Role-based admin route guard
-    │   ├── context/                 # AuthContext & AuthProvider implementation
-    │   ├── pages/                   # Main Views (Dashboard, AdminDashboard, Login, Register)
-    │   ├── test/                    # RTL Setup & mock initializers
-    │   ├── App.jsx                  # Main router configuration component
-    │   └── main.jsx                 # Vite mounting entrypoint
-    ├── vite.config.js               # Vite & Vitest configuration
-    ├── tailwind.config.js           # Glassmorphism styling configuration
+    │   ├── api/
+    │   │   └── axios.js               # Axios instance with interceptors
+    │   ├── components/
+    │   │   ├── AdminRoute.jsx         # Admin-only route guard
+    │   │   ├── Footer.jsx             # Site footer with quick links
+    │   │   ├── Layout.jsx             # Page layout wrapper with background
+    │   │   ├── Navbar.jsx             # Navigation bar with notifications
+    │   │   ├── Pagination.jsx         # Page navigation controls
+    │   │   ├── ProtectedRoute.jsx     # Authenticated route guard
+    │   │   ├── PurchaseModal.jsx      # Vehicle purchase confirmation dialog
+    │   │   ├── RestockModal.jsx       # Admin restock dialog
+    │   │   ├── SearchFilters.jsx      # Search & filter controls
+    │   │   ├── VehicleCard.jsx        # Vehicle display card
+    │   │   └── VehicleModal.jsx       # Add/Edit vehicle form modal
+    │   ├── context/
+    │   │   ├── AuthContext.jsx        # Authentication provider
+    │   │   ├── AuthContextInstance.js # Shared context instance
+    │   │   └── useAuth.js            # Auth custom hook
+    │   ├── pages/
+    │   │   ├── AdminDashboard.jsx    # Admin management panel
+    │   │   ├── Dashboard.jsx          # Public vehicle catalog
+    │   │   ├── Login.jsx              # Login page
+    │   │   ├── NotFound.jsx           # 404 page
+    │   │   └── Register.jsx           # Registration page
+    │   ├── test/
+    │   │   └── setup.js               # Test environment setup
+    │   ├── App.jsx                    # Root component with routing
+    │   ├── index.css                  # Global styles
+    │   └── main.jsx                   # Vite entry point
+    ├── .eslintrc.json
+    ├── .prettierrc
+    ├── index.html
+    ├── postcss.config.js
+    ├── tailwind.config.js
+    ├── vite.config.js
     └── package.json
 ```
 
@@ -247,122 +407,115 @@ incubyte/
 
 ## 🧪 Testing
 
-### Running Backend Tests (Jest + Supertest)
-The backend test suite verifies controller, service, repository, and middleware layers using Mongoose mocks and Supertest HTTP integration:
+### Backend Tests (Jest + Supertest)
 
 ```bash
 cd backend
 npm test
 ```
-- **Coverage**: 58/58 passing tests across 12 test suites.
 
-### Running Frontend Tests (React Testing Library + Vitest)
-The frontend test suite verifies component rendering, user interactions, form validation, route guarding, and API mocking:
+**12 test suites** | **59 tests passing**
+
+| Test Suite | Tests | Coverage Area |
+| :--- | :--- | :--- |
+| `auth.test.js` | 8 | Register, Login, GetMe endpoints |
+| `db.test.js` | 4 | MongoDB connection and disconnection |
+| `health.test.js` | 2 | Health check and 404 handling |
+| `middleware.test.js` | 6 | JWT verification and role authorization |
+| `vehicle.delete.test.js` | 4 | Soft delete (admin-only) |
+| `vehicle.get.test.js` | 3 | Pagination, sorting, filtering |
+| `vehicle.model.test.js` | 8 | Schema validation and defaults |
+| `vehicle.purchase.test.js` | 5 | Purchase flow and stock validation |
+| `vehicle.restock.test.js` | 5 | Restock flow (admin-only) |
+| `vehicle.routes.test.js` | 6 | Vehicle creation and validation |
+| `vehicle.search.test.js` | 2 | Search by make, model, price, year |
+| `vehicle.update.test.js` | 6 | Update flow and validation |
+
+### Frontend Tests (Vitest + React Testing Library)
 
 ```bash
 cd frontend
 npm test
 ```
-- **Coverage**: 22/22 passing tests across 12 test suites.
 
-### Running Code Quality Checkers
+**13 test suites** | **23 tests passing**
+
+Tests cover component rendering, user interactions, API mocking, form validation, route guarding, and authentication context.
+
+### Linting
+
 ```bash
-# Frontend Linting
+# Frontend
 cd frontend && npm run lint
 
-# Backend Type Check
-cd backend && npm run build
+# Backend
+cd backend && npm run lint
 ```
 
 ---
 
 ## 🚀 Deployment
 
-### Backend Deployment (e.g., Render / Railway / Heroku)
-1. Build the TypeScript production bundle:
-   ```bash
-   cd backend
-   npm run build
-   ```
-2. Set Production Environment Variables on host platform:
-   - `NODE_ENV=production`
-   - `MONGODB_URI=<your-production-mongodb-connection-string>`
-   - `JWT_SECRET=<strong-random-secret>`
-   - `CORS_ORIGIN=<your-frontend-deployment-url>`
-3. Set Start Command:
+### Backend (Render / Railway / Heroku)
+
+1. Set the start command:
    ```bash
    npm start
    ```
+2. Configure environment variables on your hosting platform:
+   - `NODE_ENV=production`
+   - `MONGO_URI=<your-production-mongodb-uri>`
+   - `JWT_SECRET=<strong-random-secret>`
+   - `PORT=5000`
 
-### Frontend Deployment (e.g., Vercel / Netlify)
-1. Build the Vite production bundle:
+### Frontend (Vercel / Netlify)
+
+1. Build the production bundle:
    ```bash
    cd frontend
    npm run build
    ```
-2. Set Environment Variable:
-   - `VITE_API_URL=https://your-backend-api.onrender.com/api`
-3. Deploy output `dist/` directory.
+2. Set the environment variable:
+   - `VITE_API_URL=https://your-backend-api.example.com/api`
+3. Deploy the `dist/` output directory.
 
 ---
 
-## 🖼️ Screenshots & UI Showcase
+## 🖼️ Screenshots
 
-- **Showroom Catalog**: Responsive grid displaying vehicle cards with stock badges, specs, formatted pricing, and keyword search bar.
-- **Admin Management Panel**: Real-time metric analytics cards (Total Inventory, Total Valuation, In-Stock, Out-of-Stock count), search bar, and inventory CRUD table.
-- **Vehicle Form Modal**: Add/Edit vehicle form supporting direct image URLs and file drag-and-drop dropzone with FileReader Base64 thumbnail preview.
-- **Purchase & Restock Dialogs**: Modal windows confirming purchases and stock increases.
+> Screenshots can be added here after deployment.
 
----
-
-## 🤖 AI Usage
-
-This project was developed with assistance from **Antigravity (Google DeepMind)** operating as a pair programming assistant.
-
-### AI Assistance Scope
-- **Test-Driven Development (TDD)**: Generating unit test cases in Jest and Vitest prior to feature implementation.
-- **Architecture Enforcement**: Ensuring strict separation of concerns across Controller, Service, and Repository layers.
-- **Accessibility & UX**: Implementing WCAG compliant ARIA attributes, keyboard navigation focus rings, and responsive touch layouts.
-- **Bug Resolution**: Refactoring React Context fast refresh exports and FileReader Base64 image conversions.
-
-All code produced was verified via automated test suites and linting.
+| View | Description |
+| :--- | :--- |
+| **Login Page** | Clean login form with email/password validation |
+| **Registration Page** | User registration with role selection |
+| **Vehicle Catalog** | Responsive grid of vehicle cards with search, filters, and pagination |
+| **Admin Dashboard** | Statistics cards, inventory table, and management actions |
+| **Vehicle Modal** | Add/Edit form with image URL support and validation |
+| **Purchase Dialog** | Confirmation modal with quantity input and stock validation |
+| **Restock Dialog** | Admin-only modal for replenishing vehicle stock |
 
 ---
 
-## 🤝 Contribution
+## 🔮 Future Improvements
 
-Contributions are welcome! Please follow these guidelines:
-
-1. Fork the repository.
-2. Create a feature branch:
-   ```bash
-   git checkout -b feature/amazing-feature
-   ```
-3. Commit your changes:
-   ```bash
-   git commit -m "feat: add amazing feature"
-   ```
-4. Push to the branch:
-   ```bash
-   git push origin feature/amazing-feature
-   ```
-5. Open a Pull Request.
+- **Image Upload**: Add cloud-based image storage (e.g., Cloudinary, AWS S3) for vehicle photos
+- **Pagination on Admin Table**: Server-side pagination for the admin inventory table
+- **User Profile Page**: Allow users to view purchase history and update account details
+- **Email Notifications**: Send order confirmation emails on successful purchases
+- **Rate Limiting**: Add API rate limiting to protect against abuse
+- **Swagger/OpenAPI**: Auto-generated interactive API documentation
+- **CI/CD Pipeline**: Automated testing and deployment via GitHub Actions
+- **Dark Mode**: Toggle between light and dark UI themes
 
 ---
 
-## 🔧 Troubleshooting
+## 👤 Author
 
-### 1. MongoDB Connection Failure
-- **Symptom**: `MongooseServerSelectionError` or connection timeout on server start.
-- **Solution**: Ensure your IP address is whitelisted in MongoDB Atlas Network Access rules (or set to `0.0.0.0/0` for development). Verify `MONGODB_URI` string in `backend/.env`.
+**Ridham Mangroliya**
 
-### 2. CORS Request Blocked
-- **Symptom**: Browser console logs `Access-Control-Allow-Origin` error when calling API.
-- **Solution**: Ensure `CORS_ORIGIN` in `backend/.env` matches the frontend server port (`http://localhost:3000`).
-
-### 3. JWT Token Expiration / 401 Unauthorized
-- **Symptom**: Admin or Purchase actions return 401 Unauthorized.
-- **Solution**: Sign out and log back in to refresh token in `localStorage`. Ensure `JWT_SECRET` matches across restarts.
+- GitHub: [@Ridham703](https://github.com/Ridham703)
+- Email: ridhammangroliya@gmail.com
 
 ---
 
