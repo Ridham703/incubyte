@@ -23,6 +23,11 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('dev'));
 }
 
+// Keep-alive ping endpoint for UptimeRobot
+app.get('/ping', (_req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
 app.use('/api', healthRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/vehicles', vehicleRoutes);
